@@ -3,12 +3,13 @@
  */
 const express = require('express')
 const User = require('../../model/userModel')
+// const User = require('../../middleware/userMid')
 
 var loginRouter = express.Router();
 
 // 加载登陆页面后
-loginRouter.get('/', (req, res) => {
-    res.send('login page')
+loginRouter.get('/', (req, res, next) => {
+    res.send('get login page')
 })
 
 // 实现登陆操作
@@ -19,7 +20,9 @@ loginRouter.post('/', (req, res, next) => {
             res.send({ 
                 code: 200,
                 msg: '登录成功',
-                token: '123'
+                role_id: result.role_id,
+                username: username,
+                token: result.id+result.username
             })
         }else{
             res.send({
@@ -30,6 +33,11 @@ loginRouter.post('/', (req, res, next) => {
     }).catch(err =>{
         next(err)
     })
+})
+// 验证
+loginRouter.get('/verify', (req, res) => {
+    let ver = req.headers.authorization
+    console.log(ver);
 })
 
 module.exports = loginRouter;

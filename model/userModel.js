@@ -10,7 +10,7 @@
      */
     static login (username, password) {
         return new Promise((resolve, reject) => {
-            let sql = 'SELECT id,username,password FROM `user` WHERE username = ? AND PASSWORD = ? '
+            let sql = 'SELECT * FROM `user` WHERE username = ? AND PASSWORD = ? '
             this.query(sql, [username, password]).then( results => {
                 resolve(results[0])
             }).catch (err => {
