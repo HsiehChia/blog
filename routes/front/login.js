@@ -18,7 +18,8 @@ loginRouter.post('/', (req, res, next) => {
         if(result){
             res.send({ 
                 code: 200,
-                msg: '登录成功'
+                msg: '登录成功',
+                token: '123'
             })
         }else{
             res.send({

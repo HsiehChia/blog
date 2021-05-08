@@ -3,6 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+// var session = require('cookie-session')
 
 const indexRouter = require('./routes/front/index')
 const loginRouter = require('./routes/front/login')
@@ -24,9 +25,15 @@ app.all('/*', (req, res, next)=>{
 
 app.use(logger('dev'));
 app.use(express.json());
+// post请求格式设置
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+// session设置
+// app.use(session({
+//   keys: ['secret'],
+//   maxAge: 1000 * 60 * 30
+// }))
 
 // 调用首页子应用
 app.use('/', indexRouter)

@@ -4,24 +4,25 @@
  const express = require('express')
  var indexRouter = express.Router();
 
- const User = require('../../middleware/userMid')
+//  const User = require('../../middleware/userMid')
  const Article = require('../../middleware/articleMid')
  const Category = require('../../middleware/cateMid')
 
  //加载首页页面
  indexRouter.get('/', [
-     User.getUser, 
+    //  User.getUser, 
      Article.getArticle,
      Category.getCategory
     ], (req, res) => {
      let {
-        userList, 
+        // userList, 
         articleList, 
-        categoryList} = req
+        categoryList,
+    } = req
     res.send({
-        userList: userList,
+        // userList: userList,
         articleList: articleList,
-        categoryList: categoryList
+        categoryList: categoryList,
     })
  })
 
