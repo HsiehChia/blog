@@ -91,15 +91,16 @@ export default {
       this.$refs.loginFormRef.validate(async validate => {
         // 预验证成功，发起登录请求
         if (validate) {
-          const res = await this.$http.post('/login', this.loginForm)
-          console.log(res)
-          const data = res.data
+          const { data } = await this.$http.post('/login', this.loginForm)
           console.log(data)
           if (data.code === 500) {
             this.$message.error('登录失败：' + data.msg)
           } else {
             this.$message.success(data.msg)
-            this.$router.push('/admin')
+            // 保存登录token
+            window.sessionStorage.setItem('token', data.token)
+            // 跳转到home页面
+            this.$router.push('/home')
           }
         }
       })
