@@ -88,15 +88,29 @@ export default {
     // 点击登录
     login () {
       // 预验证
-      this.$refs.loginFormRef.validate(validate => {
-        alert(validate)
+      this.$refs.loginFormRef.validate(async validate => {
+        // 预验证成功，发起登录请求
+        if (validate) {
+          const res = await this.$http.post('/login', this.loginForm)
+          console.log(res)
+          const data = res.data
+          console.log(data)
+          if (data.code === 500) {
+            this.$message.error('登录失败：' + data.msg)
+          } else {
+            this.$message.success(data.msg)
+            this.$router.push('/admin')
+          }
+        }
       })
     },
     // 点击注册
     register () {
       // 预验证
       this.$refs.loginFormRef.validate(validate => {
-        alert(validate)
+        // 预验证成功，发起注册请求
+        if (validate) {
+        }
       })
     },
     // 点击重置按钮
