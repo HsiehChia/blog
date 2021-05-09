@@ -1,104 +1,100 @@
 <template>
-  <div class="home">
-
-  <el-container>
+  <el-container class="container">
+    <!-- 头部 -->
     <el-header>
-      <el-row>
-        <el-col :span="12">
-          <div class="grid-content">
-            <el-menu :default-active="activeIndex"
-            class="el-menu-demo"
-            background-color="#18966a"
-            active-text-color="#E6A23C"
-            text-color="#fff"
-            mode="horizontal"
-            @select="handleSelect">
-              <el-menu-item index="1">
-                首页
-              </el-menu-item>
-              <el-submenu index="2">
-                <template slot="title">文章分类</template>
-                <el-menu-item index="2-1">选项1</el-menu-item>
-                <el-menu-item index="2-2">选项2</el-menu-item>
-                <el-menu-item index="2-3">选项3</el-menu-item>
-              </el-submenu>
-            </el-menu>
-          </div>
-        </el-col>
-        <el-col :span="6">
-          <div class="grid-content">
-            <el-input
-              placeholder="请输入搜索内容"
-              v-model="search"
-              clearable>
-            </el-input>
-          </div>
-        </el-col>
-        <el-col :span="2">
-          <div class="grid-content">
-            <el-button type="primary" icon="el-icon-search">搜索</el-button>
-          </div>
-        </el-col>
-        <el-col :span="4">
-          <div class="grid-content">
-            <el-dropdown @command="handleUser"  size="medium" split-button type="warning">
-              用户：User
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item command="manage">后台管理</el-dropdown-item>
-              <el-dropdown-item command="logout">退出</el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
-          </div></el-col>
-      </el-row>
+      <Header></Header>
     </el-header>
-    <el-main>Main</el-main>
+    <!-- 主体 -->
+    <el-main>
+      <!-- 热门推荐 -->
+      <el-carousel :interval="2000" type="card" arrow="always">
+        <el-carousel-item v-for="item in 4" :key="item">
+          <h3>{{ item }}</h3>
+        </el-carousel-item>
+      </el-carousel>
+      <!-- 分割线 -->
+      <el-divider>
+        <i class="el-icon-sunrise"></i>
+        <i class="el-icon-sunrise-1"></i>
+        <i class="el-icon-sunny"></i>
+        <i class="el-icon-sunrise-1"></i>
+        <i class="el-icon-sunrise"></i>
+      </el-divider>
+      <!-- 最新文章列表 -->
+      <el-row type="flex" class="row-bg" justify="space-around">
+        <el-col :span="6"><div class="grid-content bg-purple">1</div></el-col>
+        <el-col :span="6"><div class="grid-content bg-purple-light">2</div></el-col>
+        <el-col :span="6"><div class="grid-content bg-purple">3</div></el-col>
+      </el-row>
+    </el-main>
+    <!-- 底部 -->
     <el-footer>Footer</el-footer>
   </el-container>
-  </div>
 </template>
 
 <script>
-// import HelloWorld from '@/components/HelloWorld.vue'
+import Header from '@/components/Header.vue'
 
 export default {
   name: 'Home',
   data () {
     return {
-      activeIndex: '1',
-      search: ''
+      // 所有文章信息
+      articleList: []
     }
   },
+  created () {
+    this.getArticleList()
+  },
   methods: {
-    handleUser (command) {
-      if (command === 'logout') {
-        window.sessionStorage.clear()
-        this.$router.push('/login')
+    async getArticleList () {
+      const { data, status } = await this.$http.get('/article')
+      if (status !== 200) {
+        this.$message.console.error('文章加载失败')
       } else {
-        this.$router.push('/admin')
+        this.articleList = data
+        console.log(data)
       }
-    },
-    handleSelect (key, keyPath) {
-      console.log(key, keyPath)
     }
+  },
+  components: {
+    Header
   }
 }
 </script>
 <style lang="less" scoped>
+// 页面主体
+.container {
+  height: 100%;
+}
 .el-header, .el-footer {
-    background-color: #18966a;
-    color: #fff;
-    line-height: 60px;
+  background-color: #18966a;
+  color: #fff;
+  line-height: 60px;
+}
+.el-footer{
+  text-align: center;
+}
+.el-main {
+  background-color: #fff;
+  color: #333;
+}
+// 热门推荐
+  .el-carousel__item h3 {
+    color: #475669;
+    font-size: 18px;
+    opacity: 0.75;
+    line-height: 300px;
+    margin: 0;
   }
-  .el-main {
-    background-color: #fff;
-    color: #333;
-    line-height: 160px;
+
+  .el-carousel__item:nth-child(2n) {
+    background-color: #99a9bf;
   }
-  .el-dropdown-link {
-    cursor: pointer;
-    color: #fff;
+
+  .el-carousel__item:nth-child(2n+1) {
+    background-color: #d3dce6;
   }
-  .el-icon-arrow-down {
-    font-size: 12px;
-  }
+  // 最新文章
+
 </style>

@@ -2,6 +2,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import AdminHome from '../views/AdminHome.vue'
+import Cate from '../views/Cate.vue'
+import Msg from '../views/Msg.vue'
 import Login from '../components/Login.vue'
 
 Vue.use(VueRouter)
@@ -22,10 +24,16 @@ const router = new VueRouter({
     component: Home
   },
   {
-    path: '/about',
-    name: 'About',
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  }, {
+    path: '/cate',
+    name: 'Cate',
+    component: Cate
+  },
+  {
+    path: '/msg',
+    name: 'Msg',
+    component: Msg
+  },
+  {
     path: '/admin',
     name: 'Admin',
     component: AdminHome

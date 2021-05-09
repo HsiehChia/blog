@@ -99,6 +99,10 @@ export default {
             this.$message.success(data.msg)
             // 保存登录token
             window.sessionStorage.setItem('token', data.token)
+            // 保存登录名字
+            window.sessionStorage.setItem('username', data.username)
+            // 保存登录角色
+            window.sessionStorage.setItem('role_id', data.role_id)
             // 跳转到home页面
             this.$router.push('/home')
           }
