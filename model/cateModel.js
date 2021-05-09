@@ -17,4 +17,20 @@ module.exports = class Category extends require ('./model') {
             })
         })
     }
+    /**
+    * 通过类目id获取文章
+    * @param {integer} id 
+    * @returns 
+    */
+   static getArticleByCategoryId(id) {
+       return new Promise((resolve, reject) => {
+           let sql = 'SELECT * FROM `article` WHERE `category_id` = ?'
+           this.query(sql, id).then(results => {
+               resolve(results)
+           }).catch(err => {
+               console.log('通过类目id获取文章信息失败：' + err.message)
+               reject(err)
+           })
+       })
+   }
 }
