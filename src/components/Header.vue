@@ -3,9 +3,28 @@
         <el-row>
             <el-col :span="12">
                 <div class="grid-content">
-                  <el-button plain icon="el-icon-s-home" @click="toHome">首页</el-button>
-                  <el-button plain icon="el-icon-s-management" @click="toCate">文章分类</el-button>
-                  <el-button plain icon="el-icon-s-promotion" @click="toMsg">留言板</el-button>
+                  <el-menu
+                    :default-active="activeIndex2"
+                    class="el-menu-demo"
+                    mode="horizontal"
+                    @select="handleSelect"
+                    background-color="#18966a"
+                    text-color="#fff"
+                    active-text-color="#ffd04b"
+                    :router="true">
+                    <el-menu-item index="home">
+                      <i class="el-icon-s-home" style="color:#fff"></i>
+                      首页
+                    </el-menu-item>
+                    <el-menu-item index="cate">
+                      <i class="el-icon-s-management" style="color:#fff"></i>
+                      文章分类
+                    </el-menu-item>
+                    <el-menu-item index="msg">
+                      <i class="el-icon-s-promotion" style="color:#fff"></i>
+                      留言板
+                    </el-menu-item>
+                  </el-menu>
                 </div>
             </el-col>
             <el-col :span="6">

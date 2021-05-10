@@ -11,7 +11,7 @@
           <el-col :span="22">
             <div class="grid-content">
               <el-button @click="goBack" icon="el-icon-s-home" round>返回首页</el-button>
-                欢迎管理员{{username}}登录管理系统
+                欢迎管理员<strong style="font-size:20px">{{username}}</strong>登录管理系统
             </div>
           </el-col>
           <el-col :span="2">
@@ -23,7 +23,10 @@
       </el-header>
       <!-- 主体 -->
       <el-main>
-        <ArticleList></ArticleList>
+        <!-- 路由占位符 -->
+        <router-view>
+
+        </router-view>
       </el-main>
       <!-- 底部 -->
       <el-footer>Footer</el-footer>
@@ -33,7 +36,6 @@
 
 <script>
 import Aside from '@/components/Aside.vue'
-import ArticleList from '@/components/ArticleList.vue'
 
 export default {
   data () {
@@ -51,8 +53,7 @@ export default {
     }
   },
   components: {
-    Aside,
-    ArticleList
+    Aside
   }
 }
 </script>

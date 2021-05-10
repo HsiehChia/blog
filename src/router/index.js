@@ -5,6 +5,8 @@ import AdminHome from '../views/AdminHome.vue'
 import Cate from '../views/Cate.vue'
 import Msg from '../views/Msg.vue'
 import Login from '../components/Login.vue'
+import Welcome from '../components/Welcome.vue'
+import Test from '../components/Test.vue'
 
 Vue.use(VueRouter)
 
@@ -36,7 +38,41 @@ const router = new VueRouter({
   {
     path: '/admin',
     name: 'Admin',
-    component: AdminHome
+    redirect: '/admin/welcome',
+    component: AdminHome,
+    children: [{
+      path: '/admin/welcome',
+      name: 'Welcom',
+      component: Welcome
+    }, {
+      path: '/admin/user',
+      name: 'User',
+      component: Test
+    }, {
+      path: '/admin/article',
+      name: 'Article',
+      component: Test
+    }, {
+      path: '/admin/addArticle',
+      name: 'AddArticle',
+      component: Test
+    }, {
+      path: '/admin/cate',
+      name: 'Category',
+      component: Test
+    }, {
+      path: '/admin/role',
+      name: 'Role',
+      component: Test
+    }, {
+      path: '/admin/auth',
+      name: 'Auth',
+      component: Test
+    }, {
+      path: '/admin/account',
+      name: 'Account',
+      component: Test
+    }]
   }]
 })
 
