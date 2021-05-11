@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import Aside from '@/components/Aside.vue'
+import Aside from '@/components/admin/Aside.vue'
 
 export default {
   data () {
@@ -50,6 +50,7 @@ export default {
     },
     goBack () {
       this.$router.push('/home')
+      window.sessionStorage.setItem('activePath', '')
     }
   },
   components: {

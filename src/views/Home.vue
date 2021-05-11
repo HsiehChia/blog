@@ -22,7 +22,7 @@
       </el-divider>
       <!-- 最新文章列表 -->
       <div class="articleList">
-        <div class="articleItem"></div>
+        <a class="articleItem" href="/#/cate"><div>123</div></a>
       </div>
     </el-main>
     <!-- 底部 -->

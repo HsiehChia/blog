@@ -2,7 +2,7 @@
     <div>
         <div class="title">博客后台管理系统</div>
         <el-menu
-            default-active="1"
+            :default-active="activePath"
             class="el-menu-vertical-demo"
             background-color="#86ebc8"
             text-color="#333"
@@ -18,7 +18,7 @@
                 <i class="el-icon-user-solid"></i>
                 <span slot="title">用户管理</span>
                 </template>
-                 <el-menu-item index="user">
+                 <el-menu-item index="user" @click="saveNavState('user')">
                     用户列表
                 </el-menu-item>
             </el-submenu>
@@ -29,10 +29,10 @@
                     <i class="el-icon-s-management"></i>
                     <span>文章管理</span>
                 </template>
-                <el-menu-item index="addArticle">
+                <el-menu-item index="addArticle" @click="saveNavState('addArticle')">
                     发布文章
                 </el-menu-item>
-                <el-menu-item index="article">
+                <el-menu-item index="article" @click="saveNavState('article')">
                     文章列表
                 </el-menu-item>
             </el-submenu>
@@ -43,7 +43,7 @@
                 <i class="el-icon-paperclip"></i>
                 <span slot="title">类目管理</span>
                 </template>
-                <el-menu-item index="cate">
+                <el-menu-item index="cate" @click="saveNavState('cate')">
                     类目列表
                 </el-menu-item>
             </el-submenu>
@@ -54,10 +54,10 @@
                     <i class="el-icon-set-up"></i>
                     <span>权限管理</span>
                 </template>
-                <el-menu-item index="role">
+                <el-menu-item index="role" @click="saveNavState('role')">
                     角色列表
                 </el-menu-item>
-                <el-menu-item index="auth">
+                <el-menu-item index="auth" @click="saveNavState('auth')">
                     权限列表
                 </el-menu-item>
             </el-submenu>
@@ -68,7 +68,7 @@
                 <i class="el-icon-s-tools"></i>
                 <span slot="title">账户管理</span>
                 </template>
-                <el-menu-item index="account">
+                <el-menu-item index="account" @click="saveNavState('account')">
                     修改密码
                 </el-menu-item>
             </el-submenu>
@@ -80,9 +80,17 @@
 export default {
   data () {
     return {
+      activePath: ''
     }
   },
+  created () {
+    this.activePath = window.sessionStorage.getItem('activePath')
+  },
   methods: {
+    // 保存导航链接激活状态
+    saveNavState (activePath) {
+      window.sessionStorage.setItem('activePath', activePath)
+    },
     handleOpen (key, keyPath) {
       console.log(key, keyPath)
     },
