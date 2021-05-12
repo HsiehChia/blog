@@ -7,7 +7,7 @@ var logger = require('morgan');
 
 const indexRouter = require('./routes/front/index')
 const loginRouter = require('./routes/front/login')
-const aricleRouter = require('./routes/front/article')
+const aricleRouter = require('./routes/admin/article')
 const userRouter = require('./routes/admin/user')
 
 var app = express();
@@ -41,10 +41,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter)
 // 调用登录子应用
 app.use('/login', loginRouter)
-// 调用文章子应用
-app.use('/article', aricleRouter)
 // 调用用户子应用
 app.use('/user', userRouter)
+// 调用文章子应用
+app.use('/article', aricleRouter)
 
 
 // catch 404 and forward to error handler

@@ -64,6 +64,12 @@
             })
         })
     }
+    /**
+     * 获取当前页所有用户数据
+     * @param {number} start 开始位置
+     * @param {number} size 获取条数
+     * @returns 
+     */
     static getUserPage(start, size){
         return new Promise ((resolve, reject) => {
             let sql = 'SELECT * FROM `user` WHERE 1=1 ORDER BY `createTime` DESC LIMIT ?,?'
@@ -71,6 +77,78 @@
                 resolve(results)
             }).catch(err => {
                 console.log('获取当前页面用户失败：' + err.message);
+                reject(err)
+            })
+        })
+    }
+    /**
+     * 通过名字模糊搜索用户信息
+     * @param {string} username 
+     * @returns 
+     */
+    static getUserListByName(username){
+        return new Promise ((resolve, reject) => {
+            let sql = 'SELECT * FROM `user` WHERE username LIKE ?'
+            this.query(sql, username).then(results => {
+                resolve(results)
+            }).catch(err => {
+                console.log('根据名字获取用户失败：' + err.message);
+                reject(err)
+            })
+        })
+    }
+    /**
+     * 添加用户
+     * @param {string} username 
+     * @param {number} password 
+     * @param {string} email 
+     * @param {string} address 
+     * @returns 
+     */
+    static addUser (username, password, email, address){
+        return new Promise ((resolve, reject) => {
+            let sql = 'INSERT INTO `user` (username, password, email, address) VALUES (?, ?, ?, ?)'
+            this.query(sql, [username, password, email, address]).then(results => {
+                resolve(results.insertId)
+            }).catch(err => {
+                console.log('插入用户失败：' + err.message);
+                reject(err)
+            })
+        })
+    }
+    /**
+     * 修改用户
+     * @param {object} user 用户对象
+     * @returns 
+     */
+    static editUser (user){
+        return new Promise ((resolve, reject) => {
+            let sql = 'UPDATE `user` SET username = ?,email = ?,address = ? WHERE id = ?'
+            this.query(sql, [
+                user.username,
+                user.email,
+                user.address,
+                user.id
+            ]).then(results => {
+                resolve(results.affectedRows)
+            }).catch(err => {
+                console.log('编辑修改用户失败：' + err.message);
+                reject(err)
+            })
+        })
+    }
+    /**
+     * 删除用户
+     * @param {Integer} id 用户id
+     * @returns 
+     */
+    static deleteUser (id){
+        return new Promise ((resolve, reject) => {
+            let sql = 'DELETE FROM `user` WHERE id = ?'
+            this.query(sql, id).then(results => {
+                resolve(results.affectedRows)
+            }).catch(err => {
+                console.log('删除用户失败：' + err.message);
                 reject(err)
             })
         })

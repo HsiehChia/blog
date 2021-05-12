@@ -45,6 +45,12 @@ module.exports = {
             next(err)
         })
     },
+    /**
+     * 获取当前页所有用户数据
+     * @param {*} req 
+     * @param {string} res 
+     * @param {*} next 
+     */
     getUserPage: (req, res, next) => {
         let {
             start,
@@ -52,6 +58,85 @@ module.exports = {
         } = req
         User.getUserPage(start,size).then(results => {
             req.userPageList = results
+            next()
+        }).catch(err => {
+            next(err)
+        })
+    },
+    /**
+     * 通过名字搜索用户信息
+     * @param {*} req 
+     * @param {*} res 
+     * @param {*} next 
+     */
+    getUserListByName: (req, res, next) => {
+        let {
+            username
+        } = req.query
+        username = '%'+username+'%'
+        User.getUserListByName(username).then(results => {
+            req.userPageListByName = results
+            next()
+        }).catch(err => {
+            next(err)
+        })
+    },
+    /**
+     * 添加用户
+     * @param {*} req 
+     * @param {*} res 
+     * @param {*} next 
+     */
+    addUser: (req, res, next) => {
+        let {
+            username,
+            password,
+            email,
+            address
+        } = req.body
+        User.addUser(username, password, email, address).then(results => {
+            req.insertId = results
+            next()
+        }).catch(err => {
+            next(err)
+        })
+    },
+    /**
+     * 修改用户
+     * @param {*} req 
+     * @param {*} res 
+     * @param {*} next 
+     */
+    editUser: (req, res, next) => {
+        let {
+            id,
+            username,
+            email,
+            address
+        } = req.body
+        let user = {
+            id:id,
+            username:username,
+            email:email,
+            address:address
+        }
+        User.editUser(user).then(results => {
+            req.affectedRows = results
+            next()
+        }).catch(err => {
+            next(err)
+        })
+    },
+    /**
+     * 删除用户
+     * @param {*} req 
+     * @param {*} res 
+     * @param {*} next 
+     */
+    deleteUser: (req, res, next) => {
+        let { id } = req.body
+        User.deleteUser(id).then(results => {
+            req.affectedRows = results
             next()
         }).catch(err => {
             next(err)
