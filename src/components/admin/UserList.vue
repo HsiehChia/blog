@@ -65,9 +65,6 @@
                     @click="deleteUserConfirm(scope.row.id)"
                     type="danger" icon="el-icon-delete" round></el-button>
                   </el-tooltip>
-                  <el-tooltip :enterable="false" class="item" effect="dark" content="分配角色" placement="top">
-                    <el-button type="warning" icon="el-icon-setting" round></el-button>
-                  </el-tooltip>
                 </template>
               </el-table-column>
             </el-table>
@@ -137,6 +134,13 @@
             <el-form-item label="地址" prop="address">
               <el-input v-model="editUserForm.address"></el-input>
             </el-form-item>
+            <el-form-item label="用户角色">
+              <el-switch
+              active-text="管理员"
+              inactive-text="游客"
+              @change="userRoleChange(editUserForm.role_id)"
+              v-model="editUserForm.isAdmin"></el-switch>
+            </el-form-item>
           </el-form>
 
           <!-- 底部按钮 -->
@@ -188,7 +192,7 @@ export default {
         email: '',
         address: ''
       },
-      // 添加表单用户规则
+      // 表单用户验证规则
       userFormRules: {
         // 用户名验证
         username: [
@@ -214,7 +218,9 @@ export default {
         id: '',
         username: '',
         email: '',
-        address: ''
+        address: '',
+        role_id: '',
+        isAdmin: this.role_id === 1
       }
     }
   },
@@ -300,6 +306,16 @@ export default {
       this.editUserForm.username = userInfo.username
       this.editUserForm.email = userInfo.email
       this.editUserForm.address = userInfo.address
+      this.editUserForm.roleName = userInfo.roleName
+      this.editUserForm.role_id = userInfo.role_id
+    },
+    // 改变角色开关
+    userRoleChange (id) {
+      if (id === 1) {
+        this.editUserForm.role_id = 2
+      } else {
+        this.editUserForm.role_id = 1
+      }
     },
     // 点击按钮修改用户数据
     editUser () {
