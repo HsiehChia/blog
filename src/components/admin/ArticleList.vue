@@ -71,11 +71,10 @@
               <el-table-column width="150px" prop="category_name" label="类别"></el-table-column>
               <el-table-column width="150px" prop="thumbnail" label="缩略图">
                 <template slot-scope="scope">
-                  {{scope.row.id}}
                   <el-image
                   style="width: 50px;"
                   fits="contain"
-                  src="D:\project\vueModule\project04\src\assets\upload\logo.png">
+                  :src="getThumbnail(scope.row.thumbnail)">
                     <div slot="error" class="image-slot">
                       <i class="el-icon-picture-outline"></i>
                     </div>
@@ -97,10 +96,12 @@
                   </el-tooltip> -->
                   <el-tooltip :enterable="false" class="item" effect="dark" content="编辑" placement="top">
                     <el-button
+                    @click="showEditArticleDialog(scope.row)"
                     type="primary" icon="el-icon-edit" round></el-button>
                   </el-tooltip>
                   <el-tooltip :enterable="false" class="item" effect="dark" content="删除" placement="top">
                     <el-button
+                    @click="deleteArticleConfirm(scope.row.id)"
                     type="danger" icon="el-icon-delete" round>{{scope.row.id}}</el-button>
                   </el-tooltip>
                 </template>
@@ -116,6 +117,70 @@
               layout="total, prev, pager, next, jumper"
               :total="articleTotal">
             </el-pagination>
+
+            <!-- 修改文章对话框 -->
+            <el-dialog
+              title="修改文章"
+              :visible.sync="editDialogVisible"
+              width="50%">
+
+              <!-- 表单主体 -->
+              <el-form ref="editArticleFormRef"
+              :model="editArticleForm"
+              :rules="articleFormRules"
+              label-width="100px">
+                <el-form-item label="标题" prop="title">
+                  <el-input v-model="editArticleForm.title"></el-input>
+                </el-form-item>
+                <el-form-item label="内容" prop="content">
+                  <el-input
+                  type="textarea"
+                  :autosize="{ minRows: 2, maxRows: 5}"
+                  v-model="editArticleForm.content"></el-input>
+                </el-form-item>
+                <el-form-item label="类目" prop="category_name">
+                    <el-select
+                    clearable
+                    v-model="editArticleForm.category_name"
+                    placeholder="类别选择">
+                      <el-option
+                      v-for="item in categoryList"
+                      :key="item.id"
+                      :label="item.name"
+                      :value="item.id"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="缩略图" prop="thumbnail">
+                  <el-input v-model="editArticleForm.thumbnail"></el-input>
+                  <!-- https://blog.csdn.net/weixin_44237840/article/details/107213587
+                  https://blog.csdn.net/weixin_41909712/article/details/88973226
+                  https://blog.csdn.net/weixin_42418774/article/details/103201836 -->
+                    <!-- <el-upload
+                      action="https://jsonplaceholder.typicode.com/posts/"
+                      list-type="picture-card"
+                      :on-preview="handlePictureCardPreview"
+                      :on-remove="handleRemove">
+                      <i class="el-icon-plus"></i>
+                    </el-upload> -->
+                    <el-upload
+                      action=""
+                      list-type="picture-card"
+                      :on-preview="handlePictureCardPreview"
+                      :on-remove="handleRemove">
+                      <i class="el-icon-plus"></i>
+                    </el-upload>
+                    <el-dialog :visible.sync="thumbnailDialogVisible">
+                      <img width="100%" :src="thumbnailDialogImageUrl" alt="">
+                    </el-dialog>
+                </el-form-item>
+              </el-form>
+
+              <!-- 底部按钮 -->
+              <span slot="footer" class="dialog-footer">
+                <el-button @click="editDialogVisible = false">取 消</el-button>
+                <el-button type="primary" @click="editArticle">确 定</el-button>
+              </span>
+            </el-dialog>
         </el-card>
     </div>
 </template>
@@ -154,7 +219,42 @@ export default {
         id: 1,
         name: 'web',
         sort: 1
-      }]
+      }],
+      // 修改文章对话框的显示与隐藏
+      editDialogVisible: false,
+      // 表单文章验证规则
+      articleFormRules: {
+        // 标题验证
+        title: [
+          { required: true, message: '请输入标题', trigger: 'blur' },
+          { min: 2, max: 100, message: '长度在 2 到 100 个字符', trigger: 'blur' }
+        ],
+        // 文章验证
+        content: [
+          { required: true, message: 'content', trigger: 'blur' }
+        ],
+        // 类目验证
+        category_name: [
+          { required: true, message: 'category_name', trigger: 'blur' }
+        ],
+        // 缩略图验证
+        thumbnail: [
+          { required: false, message: 'thumbnail', trigger: 'blur' }
+        ]
+      },
+      // 修改文章表单
+      editArticleForm: {
+        id: '',
+        title: '',
+        content: '',
+        category_id: '',
+        category_name: '',
+        thumbnail: ''
+      },
+      // 缩略图对话框显示与隐藏
+      thumbnailDialogVisible: false,
+      // 缩略图资源地址
+      thumbnailDialogImageUrl: ''
     }
   },
   created () {
@@ -206,6 +306,67 @@ export default {
       } else {
         this.$message.success('修改热门成功')
       }
+    },
+    // 设置显示缩略图
+    getThumbnail (thumbnail) {
+      try {
+        return require('../../assets/upload/' + thumbnail)
+      } catch (e) {
+        return ''
+      }
+    },
+    // 点击按钮，显示修改文章信息对话框 以及 文章信息
+    showEditArticleDialog (articleInfo) {
+      this.editDialogVisible = true
+      this.editArticleForm.id = articleInfo.id
+      this.editArticleForm.title = articleInfo.title
+      this.editArticleForm.content = articleInfo.content
+      this.editArticleForm.category_id = articleInfo.category_id
+      this.editArticleForm.category_name = articleInfo.category_name
+      this.editArticleForm.thumbnail = articleInfo.thumbnail
+    },
+    // 点击按钮修改文章数据
+    editArticle () {
+      console.log(this.editArticleForm)
+      // this.$refs.editArticleFormRef.validate(async valid => {
+      //   const { data, status } = await this.$http.post('/article/edit', this.editArticleForm)
+      //   if (status !== 200) {
+      //     this.$message.error('修改文章数据失败')
+      //   } else {
+      //     console.log(data)
+      //     this.$message.success('修改文章数据成功')
+      //   }
+      //   this.editDialogVisible = false
+      //   this.getArticleList()
+      // })
+    },
+    // 删除文章数据
+    async deleteArticleConfirm (id) {
+      const isConfirm = await this.$confirm('此操作将永久删除该文章, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).catch(err => err)
+      if (isConfirm !== 'confirm') {
+        this.$message.info('已取消删除改文章信息')
+      } else {
+        console.log('确认删除')
+        const { status } = await this.$http.post('/article/delete', { id: id })
+        if (status !== 200) {
+          this.$message.error('文章删除失败')
+          this.getArticleList()
+        } else {
+          this.$message.success('文章删除成功')
+          this.getArticleList()
+        }
+      }
+    },
+    handleRemove (file, fileList) {
+      console.log(file, fileList)
+    },
+    handlePictureCardPreview (file) {
+      this.thumbnailDialogImageUrl = file.url
+      this.thumbnailDialogVisible = true
     }
   }
 }
