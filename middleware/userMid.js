@@ -112,13 +112,15 @@ module.exports = {
             id,
             username,
             email,
-            address
+            address,
+            role_id
         } = req.body
         let user = {
             id:id,
             username:username,
             email:email,
-            address:address
+            address:address,
+            role_id:role_id
         }
         User.editUser(user).then(results => {
             req.affectedRows = results

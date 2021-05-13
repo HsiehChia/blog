@@ -123,11 +123,12 @@
      */
     static editUser (user){
         return new Promise ((resolve, reject) => {
-            let sql = 'UPDATE `user` SET username = ?,email = ?,address = ? WHERE id = ?'
+            let sql = 'UPDATE `user` SET username = ?,email = ?,address = ? ,role_id = ? WHERE id = ?'
             this.query(sql, [
                 user.username,
                 user.email,
                 user.address,
+                user.role_id,
                 user.id
             ]).then(results => {
                 resolve(results.affectedRows)
