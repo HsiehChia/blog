@@ -62,7 +62,7 @@
             sql += category_id != '' && category_id ? ` AND category_id=${category_id}` : ''
             sql += isHot != '' && isHot ? ` AND isHot=${isHot}` : ''
 
-            sql += ' ORDER BY `createTime` DESC LIMIT ?,?'
+            sql += ' ORDER BY `createTime` DESC, id DESC LIMIT ?,?'
             this.query(sql, [start, size]).then(results => {
                 resolve(results)
             }).catch(err => {
@@ -107,6 +107,22 @@
                 resolve(results)
             }).catch(err => {
                 console.log('搜索页面文章失败：' + err.message);
+                reject(err)
+            })
+        })
+    }
+    /**
+     * 删除文章
+     * @param {integer} id 
+     * @returns 
+     */
+    static deleteArticle (id){
+        return new Promise ((resolve, reject) => {
+            let sql = 'DELETE FROM article WHERE id = ?'
+            this.query(sql, id).then(results => {
+                resolve(results.affectedRows)
+            }).catch(err => {
+                console.log('删除文章失败：' + err.message);
                 reject(err)
             })
         })

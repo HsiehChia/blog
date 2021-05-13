@@ -80,6 +80,24 @@ articleRouter.post('/isHot', [
       })
     }
 })
+/**
+ * 删除文章
+ */
+ articleRouter.post('/delete', [
+    Article.deleteArticle
+  ], (req, res) => {
+    if(req.affectedRows){
+      res.send({
+            msg: 'delete article success',
+            code: 200
+        })
+      }else {
+        res.send({
+            msg: 'delete article failed',
+            code: 500
+        })
+      }
+  })
 
 
 module.exports = articleRouter

@@ -88,5 +88,20 @@
          }).catch(err => {
              next(err)
          })
-     }
+     },
+     /**
+      * 删除文章
+      * @param {*} req 
+      * @param {*} res 
+      * @param {*} next 
+      */
+     deleteArticle: (req, res, next) => {
+        let { id } = req.body
+        Article.deleteArticle(id).then(results => {
+            req.affectedRows = results
+            next()
+        }).catch(err => {
+            next(err)
+        })
+    }
  }
