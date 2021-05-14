@@ -150,29 +150,15 @@
                       :value="item.id"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="缩略图" prop="thumbnail">
-                  <el-input v-model="editArticleForm.thumbnail"></el-input>
-                  <!-- https://blog.csdn.net/weixin_44237840/article/details/107213587
-                  https://blog.csdn.net/weixin_41909712/article/details/88973226
-                  https://blog.csdn.net/weixin_42418774/article/details/103201836 -->
-                    <!-- <el-upload
-                      action="https://jsonplaceholder.typicode.com/posts/"
-                      list-type="picture-card"
-                      :on-preview="handlePictureCardPreview"
-                      :on-remove="handleRemove">
-                      <i class="el-icon-plus"></i>
-                    </el-upload> -->
-                    <el-upload
-                      action=""
-                      list-type="picture-card"
-                      :on-preview="handlePictureCardPreview"
-                      :on-remove="handleRemove">
-                      <i class="el-icon-plus"></i>
-                    </el-upload>
-                    <el-dialog :visible.sync="thumbnailDialogVisible">
-                      <img width="100%" :src="thumbnailDialogImageUrl" alt="">
-                    </el-dialog>
-                </el-form-item>
+                <!-- <el-form-item label="缩略图" prop="thumbnail">
+                  <el-input
+                  type="file"
+                  id="thumbInput"
+                  v-model="thumbInputName"
+                  accept="image/png, image/jpeg, image/gif, image/jpg"
+                  @change="articleThumbnail()"
+                  ></el-input>
+                </el-form-item> -->
               </el-form>
 
               <!-- 底部按钮 -->
@@ -251,10 +237,8 @@ export default {
         category_name: '',
         thumbnail: ''
       },
-      // 缩略图对话框显示与隐藏
-      thumbnailDialogVisible: false,
-      // 缩略图资源地址
-      thumbnailDialogImageUrl: ''
+      // 修改文章表单中缩略图的地址
+      thumbInputName: ''
     }
   },
   created () {
@@ -361,12 +345,10 @@ export default {
         }
       }
     },
-    handleRemove (file, fileList) {
-      console.log(file, fileList)
-    },
-    handlePictureCardPreview (file) {
-      this.thumbnailDialogImageUrl = file.url
-      this.thumbnailDialogVisible = true
+    articleThumbnail () {
+      this.editArticleForm.thumbnail = document.querySelector('#thumbInput').files[0].name
+      console.log(document.querySelector('#thumbInput').value)
+      console.log(this.editArticleForm.thumbnail)
     }
   }
 }

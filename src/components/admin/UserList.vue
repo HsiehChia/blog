@@ -321,15 +321,17 @@ export default {
     editUser () {
       console.log(this.editUserForm)
       this.$refs.editUserFormRef.validate(async valid => {
-        const { data, status } = await this.$http.post('/user/edit', this.editUserForm)
-        if (status !== 200) {
-          this.$message.error('修改用户数据失败')
-        } else {
-          console.log(data)
-          this.$message.success('修改用户数据成功')
+        if (valid) {
+          const { data, status } = await this.$http.post('/user/edit', this.editUserForm)
+          if (status !== 200) {
+            this.$message.error('修改用户数据失败')
+          } else {
+            console.log(data)
+            this.$message.success('修改用户数据成功')
+          }
+          this.editDialogVisible = false
+          this.getUserList()
         }
-        this.editDialogVisible = false
-        this.getUserList()
       })
     },
     // 删除用户确认框
