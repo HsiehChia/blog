@@ -98,6 +98,21 @@ articleRouter.post('/isHot', [
         })
       }
   })
-
+  /**
+   * 图片上传
+   */
+//  articleApp.post('/upload', (req, res) => {
+//     if (req.uploadUrl) {
+//         res.json({
+//             uploaded: true,
+//             url: req.uploadUrl
+//         })
+//     } else {
+//         res.json({
+//             uploaded: false,
+//             err: { message: '上传失败' }
+//         })
+//     }
+// })
 
 module.exports = articleRouter

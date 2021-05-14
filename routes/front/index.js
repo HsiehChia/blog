@@ -19,15 +19,4 @@
     })
  })
 
- indexRouter.get('/cate', [
-     Category.getCategory
-   ], (req, res) => {
-    let {
-       categoryList
-   } = req
-   res.send({
-        categoryList: categoryList
-   })
-})
-
  module.exports = indexRouter;
