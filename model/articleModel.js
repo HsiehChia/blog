@@ -35,6 +35,21 @@
         })
     }
     /**
+     * 获取热门文章
+     * @returns 热门文章列表
+     */
+    static getHotArticleList () {
+        return new Promise ((resolve, reject) => {
+            let sql = 'SELECT * FROM `article` WHERE isHot = 1'
+            this.query(sql).then(results => {
+                resolve(results)
+            }).catch(err => {
+                console.log('获取热门文章失败：' + err.message);
+                reject(err)
+            })
+        })
+    }
+    /**
      * 获取文章类别
      * @returns 文章类别列表
      */
@@ -77,7 +92,7 @@
      * @param {*} isHot 
      * @returns 
      */
-    static setArticleHot(id, isHot){
+    static setArticleHot(isHot, id){
         return new Promise ((resolve, reject) => {
             let sql = 'UPDATE article SET isHot = ? WHERE id = ?'
             this.query(sql, [isHot, id]).then(results => {

@@ -35,6 +35,14 @@
              next(err)
          })
      },
+     getHotArticleList: (req, res, next) => {
+         Article.getHotArticleList().then(results => {
+             req.hotArticleList = results
+             next()
+         }).catch(err =>{
+             next(err)
+         })
+     },
      /**
       * 获取文章类别列表
       * @param {*} req 

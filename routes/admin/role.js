@@ -20,6 +20,24 @@ roleRouter.get('/', [
     })
 })
 /**
+ * 添加角色信息
+ */
+roleRouter.post('/add', [
+    Role.addRole
+ ], (req, res) => {
+   if(req.insertId){
+     res.send({
+           msg: 'add role success',
+           code: 200
+       })
+     }else {
+       res.send({
+           msg: 'add role failed',
+           code: 500
+       })
+     }
+ })
+/**
  * 编辑角色信息
  */
 roleRouter.post('/edit', [
@@ -33,6 +51,24 @@ roleRouter.post('/edit', [
     }else {
         res.send({
             msg: 'edit role failed',
+            code: 500
+        })
+    }
+})
+/**
+ * 删除角色信息
+ */
+roleRouter.post('/delete', [
+    Role.deleteRole
+], (req, res) => {
+    if(req.affectedRows) {
+        res.send({
+            msg: 'delete role success',
+            code: 200
+        })
+    }else {
+        res.send({
+            msg: 'delete role failed',
             code: 500
         })
     }

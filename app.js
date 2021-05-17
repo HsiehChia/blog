@@ -9,6 +9,8 @@ var multer = require('multer');
 
 const indexRouter = require('./routes/front/index')
 const loginRouter = require('./routes/front/login')
+const homeCateRouter = require('./routes/front/cate')
+
 const aricleRouter = require('./routes/admin/article')
 const userRouter = require('./routes/admin/user')
 const cateRouter = require('./routes/admin/cate')
@@ -51,10 +53,15 @@ app.use(express.static(path.join(__dirname, 'public')));
 //   maxAge: 1000 * 60 * 30
 // }))
 
+// 前台：
 // 调用首页子应用
-app.use('/', indexRouter)
+app.use('/home/index', indexRouter)
 // 调用登录子应用
 app.use('/login', loginRouter)
+// 调用分类子应用
+app.use('/home/cate', homeCateRouter)
+
+// 后台：
 // 调用用户子应用
 app.use('/user', userRouter)
 // 调用文章子应用
