@@ -102,7 +102,7 @@
                   <el-tooltip :enterable="false" class="item" effect="dark" content="删除" placement="top">
                     <el-button
                     @click="deleteArticleConfirm(scope.row.id)"
-                    type="danger" icon="el-icon-delete" round>{{scope.row.id}}</el-button>
+                    type="danger" icon="el-icon-delete" round></el-button>
                   </el-tooltip>
                 </template>
               </el-table-column>
@@ -294,7 +294,7 @@ export default {
     // 设置显示缩略图
     getThumbnail (thumbnail) {
       try {
-        return require('../../assets/upload/' + thumbnail)
+        return require('@/assets/upload/' + thumbnail)
       } catch (e) {
         return ''
       }

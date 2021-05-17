@@ -6,28 +6,34 @@
         </el-header>
         <!-- 主体 -->
         <el-main>
-          <el-tabs v-model="activeName" @tab-click="handleClick">
-            <el-tab-pane label="Web前端" name="first">
-              <div class="articleList">
-                <div class="articleItem">Web前端</div>
+        <el-tabs v-model="activeName" type="border-card" @tab-click="handleClick">
+          <el-tab-pane
+          v-for="cate in categoryList"
+          :key="cate.id"
+          :label="cate.name"
+          :name="cate.name">
+
+          <div class="articleList">
+            <div class="articleItem"
+            v-for="article in articleList"
+            :key="article.id">
+              <el-image
+              style="width: 100%; height: 200px"
+              fits="cover"
+              :src="getThumbnail(article.thumbnail)">
+                <div slot="error" class="image-slot">
+                  <i class="el-icon-picture-outline articleItem-i"></i>
+                </div>
+              </el-image>
+              <span class="articleItem-span">{{ '标题：' + article.title }}</span>
+              <div class="articleItem-button">
+                <el-button round type="primary">点击查看详情</el-button>
               </div>
-            </el-tab-pane>
-            <el-tab-pane label="MySql" name="second">
-              <div class="articleList">
-                <div class="articleItem">MySql</div>
-              </div>
-            </el-tab-pane>
-            <el-tab-pane label="NodeJS" name="third">
-              <div class="articleList">
-                <div class="articleItem">NodeJS</div>
-              </div>
-            </el-tab-pane>
-            <el-tab-pane label="Express" name="fourth">
-              <div class="articleList">
-                <div class="articleItem">Express</div>
-              </div>
-            </el-tab-pane>
-          </el-tabs>
+            </div>
+          </div>
+
+          </el-tab-pane>
+        </el-tabs>
         </el-main>
         <!-- 底部 -->
         <el-footer>Footer</el-footer>
@@ -41,9 +47,11 @@ export default {
   data () {
     return {
       // 被选中的类目
-      activeName: 'first',
+      activeName: '无分类',
       // 所有类目信息
-      categoryList: []
+      categoryList: [],
+      // 分类下的文章
+      articleList: []
     }
   },
   created () {
@@ -55,15 +63,35 @@ export default {
   methods: {
     // 类目选中后
     handleClick (tab, event) {
-      console.log(tab, event)
+      const index = tab.index
+      this.articleListByCateId(index)
+      console.log(tab.index, event)
     },
+    // 渲染类目列表
     async getCategoryList () {
-      const { data, status } = await this.$http.get('/cate')
+      const { data, status } = await this.$http.get('/home/cate')
       if (status !== 200) {
-        this.$message.console.error('文章加载失败')
+        this.$message.error('文章加载失败')
       } else {
-        this.categoryList = data
-        console.log(data)
+        this.categoryList = data.categoryList
+      }
+    },
+    // 通过类目id获得的文章列表
+    async articleListByCateId (id) {
+      const { data, status } = await this.$http.get('/home/cate/' + id)
+      if (status !== 200) {
+        this.$message.error('文章加载失败')
+      } else {
+        this.articleList = data.articleListByCateId
+      }
+      console.log(this.articleList)
+    },
+    // 设置显示图片
+    getThumbnail (thumbnail) {
+      try {
+        return require('@/assets/upload/' + thumbnail)
+      } catch (e) {
+        return ''
       }
     }
   }
@@ -89,22 +117,34 @@ export default {
 // 文章列表
   .articleList {
     width: 100%;
-    // background-color: #d3dce6;
     display: flex;
     flex-flow: row wrap;
-    justify-content: space-between;
   }
   .articleItem{
     width: 23%;
     height: 300px;
-    background-color: #99a9bf;
-    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    margin: 20px 10px;
     border-radius: 5px;
-    transition: all 0.3s ease-in-out 0.2s;
+    transition: all 0.2s ease-in-out 0.1s;
+    position: relative;
   }
   .articleItem:hover {
-    cursor: pointer;
-    transform: translate3d(-4px, -4px ,0);
-    box-shadow: 5px 5px 10px 2px #d1d1d1;
+    transform: translate3d(-2px, -2px ,0);
+    box-shadow: 3px 3px 15px 2px #d1d1d1;
+  }
+  .articleItem-i {
+    display: block;
+    text-align: center;
+    line-height: 200px;
+    background-color: #eee;
+  }
+  .articleItem-span {
+    padding: 0 3px;
+  }
+  .articleItem-button {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
   }
 </style>

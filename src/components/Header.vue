@@ -4,7 +4,7 @@
             <el-col :span="12">
                 <div class="grid-content">
                   <el-menu
-                    :default-active="activeIndex2"
+                    :default-active="activeIndex"
                     class="el-menu-demo"
                     mode="horizontal"
                     @select="handleSelect"
@@ -68,6 +68,9 @@ export default {
     },
     toMsg () {
       this.$router.push('/msg')
+    },
+    handleSelect (key, keyPath) {
+      console.log(key, keyPath)
     }
   },
   components: {

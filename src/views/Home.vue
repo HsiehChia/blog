@@ -7,9 +7,18 @@
     <!-- 主体 -->
     <el-main>
       <!-- 热门推荐 -->
-      <el-carousel :interval="2000" type="card" arrow="always">
-        <el-carousel-item v-for="item in 4" :key="item">
-          <h3>{{ item }}</h3>
+      <el-carousel :interval="200000" type="card" arrow="always">
+        <el-carousel-item v-for="item in hotArticleList" :key="item.id">
+          <div class="hot-item">
+          <h3 class="hot-title">{{ item.title }}</h3>
+          <el-image
+          class="hot-img"
+          :src="getThumbnail(item.thumbnail)">
+            <div slot="error" class="image-slot">
+              <i class="el-icon-picture-outline articleItem-i"></i>
+            </div>
+          </el-image>
+          </div>
         </el-carousel-item>
       </el-carousel>
       <!-- 分割线 -->
@@ -22,8 +31,32 @@
       </el-divider>
       <!-- 最新文章列表 -->
       <div class="articleList">
-        <a class="articleItem" href="/#/cate"><div>123</div></a>
+        <div class="articleItem"
+        v-for="article in articleList"
+        :key="article.id">
+          <el-image
+          style="width: 100%; height: 200px"
+          fits="cover"
+          :src="getThumbnail(article.thumbnail)">
+            <div slot="error" class="image-slot">
+              <i class="el-icon-picture-outline articleItem-i"></i>
+            </div>
+          </el-image>
+          <span class="articleItem-span">{{ '标题：' + article.title }}</span>
+          <div class="articleItem-button">
+            <el-button round type="primary">点击查看详情</el-button>
+          </div>
+        </div>
       </div>
+      <!-- 分页 -->
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page.sync="p"
+        :page-size="pageNum"
+        layout="total, prev, pager, next, jumper"
+        :total="articleTotal">
+      </el-pagination>
     </el-main>
     <!-- 底部 -->
     <el-footer>Footer</el-footer>
@@ -38,20 +71,67 @@ export default {
   data () {
     return {
       // 所有文章信息
-      articleList: []
+      articleList: [],
+      // 用户数据总数
+      articleTotal: 0,
+      // 页面总数
+      pageNum: 10,
+      num: 10,
+      // 当前页面
+      p: 2,
+      // 热门文章列表
+      hotArticleList: [],
+      // 查询数据
+      queryInfo: {
+        query: '1'
+      }
     }
   },
   created () {
     this.getArticleList()
+    this.getHotArticleList()
   },
   methods: {
-    async getArticleList () {
-      const { data, status } = await this.$http.get('/article')
+    // 获取所有文章
+    async getArticleList (query) {
+      query = '?p=' + this.queryInfo.query
+      const { data, status } = await this.$http.get('/home/index' + query)
       if (status !== 200) {
         this.$message.console.error('文章加载失败')
       } else {
-        this.articleList = data
-        console.log(data)
+        this.hotArticleList = data.page.hotArticleList
+        this.pageNum = data.page.pageNum
+        this.articleTotal = data.page.articleTotal
+        this.p = Number(data.page.p)
+        this.articleList = data.page.articlePageList
+        console.log(data.page.hotArticleList)
+      }
+    },
+    // 获取所有热门文章
+    async getHotArticleList () {
+      const { data, status } = await this.$http.get('/home/index/hot')
+      if (status !== 200) {
+        this.$message.console.error('文章加载失败')
+      } else {
+        this.hotArticleList = data.hotArticleList
+      }
+    },
+    // 监听page-size改变
+    handleSizeChange (size) {
+      console.log(`每页 ${size} 条`)
+    },
+    // 监听current-page.sync改变
+    handleCurrentChange (val) {
+      console.log(`当前页: ${val}`)
+      this.queryInfo.query = val
+      this.getArticleList()
+    },
+    // 设置显示图片
+    getThumbnail (thumbnail) {
+      try {
+        return require('@/assets/upload/' + thumbnail)
+      } catch (e) {
+        return ''
       }
     }
   },
@@ -78,40 +158,67 @@ export default {
   color: #333;
 }
 // 热门推荐
-  .el-carousel__item h3 {
-    color: #475669;
-    font-size: 18px;
-    opacity: 0.75;
-    line-height: 300px;
+  .hot-item {
+    padding: 0;
+    width: 100%;
+    height: 300px;
+    position: relative;
+  }
+  .hot-img {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 230px;
+  }
+  .hot-item h3{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 70px;
+    line-height: 70px;
+    padding: 0 50px;
+    color: #333;
     margin: 0;
+    background-color: #d1d1d1;
   }
-
-  .el-carousel__item:nth-child(2n) {
-    background-color: #99a9bf;
-  }
-
-  .el-carousel__item:nth-child(2n+1) {
-    background-color: #d3dce6;
+  .image-slot {
+    width: 100%;
+    height: 230px;
+    line-height: 230px;
   }
   // 最新文章
   .articleList {
     width: 100%;
-    // background-color: #d3dce6;
     display: flex;
     flex-flow: row wrap;
-    justify-content: space-between;
   }
   .articleItem{
     width: 23%;
     height: 300px;
-    background-color: #99a9bf;
-    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    margin: 20px 10px;
     border-radius: 5px;
-    transition: all 0.3s ease-in-out 0.2s;
+    transition: all 0.2s ease-in-out 0.1s;
+    position: relative;
   }
   .articleItem:hover {
-    cursor: pointer;
-    transform: translate3d(-4px, -4px ,0);
-    box-shadow: 5px 5px 10px 2px #d1d1d1;
+    transform: translate3d(-2px, -2px ,0);
+    box-shadow: 3px 3px 15px 2px #d1d1d1;
+  }
+  .articleItem-i {
+    display: block;
+    text-align: center;
+    line-height: 270px;
+    background-color: #eee;
+  }
+  .articleItem-span {
+    padding: 0 3px;
+  }
+  .articleItem-button {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
   }
 </style>
