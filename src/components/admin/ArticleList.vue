@@ -46,6 +46,7 @@
                 <el-col :span="6">
                     <div class="grid-content">
                         <el-button
+                        @click="addArticle"
                         type="warning" round>添加文章</el-button>
                     </div>
                 </el-col>
@@ -96,7 +97,7 @@
                   </el-tooltip> -->
                   <el-tooltip :enterable="false" class="item" effect="dark" content="编辑" placement="top">
                     <el-button
-                    @click="showEditArticleDialog(scope.row)"
+                    @click="editArticle(scope.row.id)"
                     type="primary" icon="el-icon-edit" round></el-button>
                   </el-tooltip>
                   <el-tooltip :enterable="false" class="item" effect="dark" content="删除" placement="top">
@@ -117,56 +118,6 @@
               layout="total, prev, pager, next, jumper"
               :total="articleTotal">
             </el-pagination>
-
-            <!-- 修改文章对话框 -->
-            <el-dialog
-              title="修改文章"
-              :visible.sync="editDialogVisible"
-              width="50%">
-
-              <!-- 表单主体 -->
-              <el-form ref="editArticleFormRef"
-              :model="editArticleForm"
-              :rules="articleFormRules"
-              label-width="100px">
-                <el-form-item label="标题" prop="title">
-                  <el-input v-model="editArticleForm.title"></el-input>
-                </el-form-item>
-                <el-form-item label="内容" prop="content">
-                  <el-input
-                  type="textarea"
-                  :autosize="{ minRows: 2, maxRows: 5}"
-                  v-model="editArticleForm.content"></el-input>
-                </el-form-item>
-                <el-form-item label="类目" prop="category_name">
-                    <el-select
-                    clearable
-                    v-model="editArticleForm.category_name"
-                    placeholder="类别选择">
-                      <el-option
-                      v-for="item in categoryList"
-                      :key="item.id"
-                      :label="item.name"
-                      :value="item.id"></el-option>
-                    </el-select>
-                </el-form-item>
-                <!-- <el-form-item label="缩略图" prop="thumbnail">
-                  <el-input
-                  type="file"
-                  id="thumbInput"
-                  v-model="thumbInputName"
-                  accept="image/png, image/jpeg, image/gif, image/jpg"
-                  @change="articleThumbnail()"
-                  ></el-input>
-                </el-form-item> -->
-              </el-form>
-
-              <!-- 底部按钮 -->
-              <span slot="footer" class="dialog-footer">
-                <el-button @click="editDialogVisible = false">取 消</el-button>
-                <el-button type="primary" @click="editArticle">确 定</el-button>
-              </span>
-            </el-dialog>
         </el-card>
     </div>
 </template>
@@ -309,20 +260,14 @@ export default {
       this.editArticleForm.category_name = articleInfo.category_name
       this.editArticleForm.thumbnail = articleInfo.thumbnail
     },
+    // 点击添加文章按钮，跳转添加文章页面
+    addArticle () {
+      this.$router.push('/admin/addArticle')
+    },
     // 点击按钮修改文章数据
-    editArticle () {
-      console.log(this.editArticleForm)
-      // this.$refs.editArticleFormRef.validate(async valid => {
-      //   const { data, status } = await this.$http.post('/article/edit', this.editArticleForm)
-      //   if (status !== 200) {
-      //     this.$message.error('修改文章数据失败')
-      //   } else {
-      //     console.log(data)
-      //     this.$message.success('修改文章数据成功')
-      //   }
-      //   this.editDialogVisible = false
-      //   this.getArticleList()
-      // })
+    editArticle (id) {
+      window.sessionStorage.setItem('adminArticleId', id)
+      this.$router.push('/admin/editArticle')
     },
     // 删除文章数据
     async deleteArticleConfirm (id) {

@@ -71,6 +71,7 @@ export default {
     },
     handleSelect (key, keyPath) {
       console.log(key, keyPath)
+      window.sessionStorage.setItem('activePath', key)
     }
   },
   components: {

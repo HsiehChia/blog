@@ -29,9 +29,6 @@
                     <i class="el-icon-s-management"></i>
                     <span>文章管理</span>
                 </template>
-                <el-menu-item index="addArticle" @click="saveNavState('addArticle')">
-                    发布文章
-                </el-menu-item>
                 <el-menu-item index="article" @click="saveNavState('article')">
                     文章列表
                 </el-menu-item>
@@ -68,8 +65,8 @@
                 <i class="el-icon-s-tools"></i>
                 <span slot="title">账户管理</span>
                 </template>
-                <el-menu-item index="account" @click="saveNavState('account')">
-                    修改密码
+                <el-menu-item index="datacount" @click="saveNavState('datacount')">
+                    数据统计
                 </el-menu-item>
             </el-submenu>
         </el-menu>

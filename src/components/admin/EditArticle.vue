@@ -4,13 +4,13 @@
         <el-breadcrumb separator="/">
             <el-breadcrumb-item :to="{ path: '/admin' }">后台管理</el-breadcrumb-item>
             <el-breadcrumb-item>文章管理</el-breadcrumb-item>
-            <el-breadcrumb-item>添加文章</el-breadcrumb-item>
+            <el-breadcrumb-item>修改文章</el-breadcrumb-item>
         </el-breadcrumb>
         <!-- 卡片视图区 -->
         <el-card class="box-card">
           <!-- 头部 -->
           <el-row>
-            <el-col :span="18"><div class="grid-content">添加文章</div></el-col>
+            <el-col :span="18"><div class="grid-content">修改文章</div></el-col>
             <el-col :span="6"><div class="grid-content">
               <el-button @click="goArticle" type="warning" round>返回文章管理</el-button></div></el-col>
           </el-row>
@@ -21,7 +21,7 @@
           ref="articleFromRef"
           :model="articleFrom"
           label-width="100px">
-          <!-- 文章标题 -->
+            <!-- 文章标题 -->
             <el-form-item label="标题" prop="title" style="width:500px">
               <el-input v-model="articleFrom.title"></el-input>
             </el-form-item>
@@ -63,9 +63,10 @@
               ></el-input>
             </el-form-item> -->
           </el-form>
+
           <!-- 底部按钮 -->
           <el-button @click="goArticle">取 消</el-button>
-          <el-button type="primary" @click="addArticle">确 定</el-button>
+          <el-button type="primary" @click="editArticle">确 定</el-button>
         </el-card>
     </div>
 </template>
@@ -105,24 +106,23 @@ export default {
       },
       // 文章信息
       articleFrom: {
-        title: '',
-        content: '',
-        category_id: '',
+        title: '44213',
+        content: '1312',
+        category_id: '1',
         thumbnail: '',
-        isHot: 1
+        isHot: '1'
       }
     }
   },
   created () {
     this.getCateList()
+    const adminArticleId = window.sessionStorage.getItem('adminArticleId')
+    this.getArticle(adminArticleId)
   },
   methods: {
     // 返回文章管理
     goArticle () {
       this.$router.push('/admin/article')
-    },
-    logart () {
-      console.log(this.articleFrom.isHot)
     },
     // 获取当前类目列表
     async getCateList () {
@@ -132,18 +132,28 @@ export default {
       } else {
         this.categoryList = data.categoryList
       }
-      console.log(this.categoryList)
     },
-    // 点击按钮添加文章
-    addArticle () {
+    // 获取当前文章信息
+    async getArticle (adminArticleId) {
+      const { data, status } = await this.$http.get('/article/id?id=' + adminArticleId)
+      if (status !== 200) {
+        console.log(this.$message.error('当前文章信息获取失败'))
+      } else {
+        this.articleFrom = data.articleInfo[0]
+        this.articleFrom.isHot = data.articleInfo[0].isHot.toString()
+      }
+      console.log(this.articleFrom)
+    },
+    // 点击按钮修改文章
+    editArticle () {
       this.$refs.articleFromRef.validate(async valid => {
         if (valid) {
-          const { status } = await this.$http.post('/article/add', this.articleFrom)
+          const { status } = await this.$http.post('/article/edit', this.articleFrom)
           if (status !== 200) {
-            this.$message.error('添加文章失败')
+            this.$message.error('修改文章失败')
           } else {
-            this.$message.success('添加文章成功')
-            this.$router.push('/admin/article')
+            this.$message.success('修改文章成功')
+            // this.$router.push('/admin/article')
           }
         }
       })

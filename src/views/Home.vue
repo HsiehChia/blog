@@ -44,7 +44,9 @@
           </el-image>
           <span class="articleItem-span">{{ '标题：' + article.title }}</span>
           <div class="articleItem-button">
-            <el-button round type="primary">点击查看详情</el-button>
+            <el-button
+            @click="details(article.id)"
+            round type="primary">点击查看详情</el-button>
           </div>
         </div>
       </div>
@@ -90,8 +92,19 @@ export default {
   created () {
     this.getArticleList()
     this.getHotArticleList()
+    this.reloadPage()
+  },
+  mounted () {
+    this.reloadPage()
   },
   methods: {
+    // 强制刷新当前页
+    reloadPage () {
+      if (window.sessionStorage.getItem('activePath') === 'home') {
+        location.reload()
+        window.sessionStorage.setItem('activePath', '')
+      }
+    },
     // 获取所有文章
     async getArticleList (query) {
       query = '?p=' + this.queryInfo.query
@@ -104,7 +117,6 @@ export default {
         this.articleTotal = data.page.articleTotal
         this.p = Number(data.page.p)
         this.articleList = data.page.articlePageList
-        console.log(data.page.hotArticleList)
       }
     },
     // 获取所有热门文章
@@ -133,6 +145,11 @@ export default {
       } catch (e) {
         return ''
       }
+    },
+    // 查看文章详情
+    details (id) {
+      window.sessionStorage.setItem('pageArticleId', id)
+      this.$router.push('/detail')
     }
   },
   components: {

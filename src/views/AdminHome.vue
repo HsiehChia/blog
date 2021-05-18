@@ -50,7 +50,7 @@ export default {
     },
     goBack () {
       this.$router.push('/home')
-      window.sessionStorage.setItem('activePath', '')
+      window.sessionStorage.setItem('activePath', 'home')
     }
   },
   components: {

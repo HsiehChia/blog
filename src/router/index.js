@@ -2,17 +2,19 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import AdminHome from '../views/AdminHome.vue'
-import Cate from '../views/Cate.vue'
-import Msg from '../views/Msg.vue'
+import Cate from '../components/Cate.vue'
+import Msg from '../components/Msg.vue'
 import Login from '../components/Login.vue'
+import ArticlePage from '../components/ArticlePage.vue'
 import Welcome from '../components/admin/Welcome.vue'
 import UserList from '../components/admin/UserList.vue'
 import ArticleList from '../components/admin/ArticleList.vue'
 import AddArticle from '../components/admin/AddArticle.vue'
+import editArticle from '../components/admin/EditArticle.vue'
 import CategoryList from '../components/admin/CategoryList.vue'
 import RoleList from '../components/admin/RoleList.vue'
 import AuthList from '../components/admin/AuthList.vue'
-import Account from '../components/admin/Account.vue'
+import DataCount from '../components/admin/DataCount.vue'
 
 Vue.use(VueRouter)
 
@@ -35,6 +37,11 @@ const router = new VueRouter({
     path: '/cate',
     name: 'Cate',
     component: Cate
+  },
+  {
+    path: '/detail',
+    name: 'ArticlePage',
+    component: ArticlePage
   },
   {
     path: '/msg',
@@ -63,6 +70,10 @@ const router = new VueRouter({
       name: 'AddArticle',
       component: AddArticle
     }, {
+      path: '/admin/editArticle',
+      name: 'editArticle',
+      component: editArticle
+    }, {
       path: '/admin/cate',
       name: 'CategoryList',
       component: CategoryList
@@ -75,9 +86,9 @@ const router = new VueRouter({
       name: 'AuthList',
       component: AuthList
     }, {
-      path: '/admin/account',
-      name: 'Account',
-      component: Account
+      path: '/admin/datacount',
+      name: 'DataCount',
+      component: DataCount
     }]
   }]
 })

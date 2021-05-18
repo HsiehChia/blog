@@ -63,7 +63,7 @@ export default {
   methods: {
     // 类目选中后
     handleClick (tab, event) {
-      const index = tab.index
+      const index = Number(tab.index) + 1
       this.articleListByCateId(index)
       console.log(tab.index, event)
     },
