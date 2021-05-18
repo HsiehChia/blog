@@ -85,12 +85,12 @@
       * @param {*} res 
       * @param {*} next 
       */
-     setArticleHot: (req, res, next) => {
+      editArticleHot: (req, res, next) => {
          let {
              isHot,
              id
          } = req.body
-         Article.setArticleHot(isHot, id).then(results => {
+         Article.editArticleHot(isHot, id).then(results => {
              req.affectedRows = results
              next()
          }).catch(err => {
@@ -107,6 +107,38 @@
         let { id } = req.body
         Article.deleteArticle(id).then(results => {
             req.affectedRows = results
+            next()
+        }).catch(err => {
+            next(err)
+        })
+    },
+    /**
+     * 添加文章
+     * @param {*} req 
+     * @param {*} res 
+     * @param {*} next 
+     */
+    addArticle: (req, res, next) => {
+        let { title, content, isHot, category_id} = req.body
+        let thumbnail = req.body.thumbnail ? req.body.thumbnail : null
+        let createTime = new Date()
+        Article.addArticle(title, content, isHot, category_id, thumbnail, createTime).then(results => {
+            req.insertId = results
+            next()
+        }).catch(err => {
+            next(err)
+        })
+    },
+    /**
+     * 通过id获得文章信息
+     * @param {*} req 
+     * @param {*} res 
+     * @param {*} next 
+     */
+    getArticleById: (req, res, next) => {
+        let { id } = req.query
+        Article.getArticleById(id).then(results => {
+            req.articleInfo = results
             next()
         }).catch(err => {
             next(err)

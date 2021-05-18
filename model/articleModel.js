@@ -92,7 +92,7 @@
      * @param {*} isHot 
      * @returns 
      */
-    static setArticleHot(isHot, id){
+    static editArticleHot(isHot, id){
         return new Promise ((resolve, reject) => {
             let sql = 'UPDATE article SET isHot = ? WHERE id = ?'
             this.query(sql, [isHot, id]).then(results => {
@@ -138,6 +138,43 @@
                 resolve(results.affectedRows)
             }).catch(err => {
                 console.log('删除文章失败：' + err.message);
+                reject(err)
+            })
+        })
+    }
+    /**
+     * 添加文章
+     * @param {string} title 
+     * @param {string} content 
+     * @param {integer} isHot 
+     * @param {integer} category_id 
+     * @param {string} thumbnail 
+     * @returns 
+     */
+    static addArticle (title, content, isHot, category_id, thumbnail, createTime) {
+        return new Promise ((resolve, reject) => {
+            let sql = 'INSERT INTO article (title, content, isHot, category_id, thumbnail, createTime) VALUES (?, ?, ?, ?, ?, ?)'
+            this.query(sql, [title, content, isHot, category_id, thumbnail, createTime]).then(results => {
+                resolve(results.insertId)
+            }).catch(err => {
+                console.log('添加文章失败：' + err.message);
+                reject(err)
+            })
+        })
+    }
+    /**
+     * 通过id获得文章
+     * @param {integer} id 
+     * @returns 
+     */
+    static getArticleById(id) {
+        return new Promise ((resolve, reject) => {
+            id = id ? id : 1
+            let sql = 'SELECT * FROM article WHERE id = ?'
+            this.query(sql, id).then(results => {
+                resolve(results)
+            }).catch(err => {
+                console.log('通过id获得文章失败：' + err.message);
                 reject(err)
             })
         })

@@ -5,6 +5,7 @@ const express = require('express')
 const articleRouter = express()
 
 const Article = require('../../middleware/articleMid')
+const Category = require ('../../middleware/cateMid')
 
 /**
  * 获取所有文章信息
@@ -63,10 +64,36 @@ articleRouter.get('/', [
     })
 })
 /**
+ * 获取所有类目信息
+ */
+articleRouter.get('/cate', [
+    Category.getCategory
+  ], (req, res) => {
+      let {
+        categoryList
+      } = req
+      res.send({
+        categoryList: categoryList
+      })
+})
+/**
+ * 通过id获取文章
+ */
+articleRouter.get('/id', [
+    Article.getArticleById
+], (req, res) => {
+    let {
+        articleInfo
+    } = req
+    res.send({
+        articleInfo: articleInfo
+    })
+})
+/**
  * 指定文章热门设置
  */
 articleRouter.post('/isHot', [
-  Article.setArticleHot
+  Article.editArticleHot
 ], (req, res) => {
   if(req.affectedRows){
     res.send({
@@ -79,6 +106,24 @@ articleRouter.post('/isHot', [
           code: 500
       })
     }
+})
+/**
+ * 添加文章
+ */
+articleRouter.post('/add',[
+    Article.addArticle
+], (req, res) => {
+    if(req.insertId){
+        res.send({
+              msg: 'add article success',
+              code: 200
+          })
+        }else {
+          res.send({
+              msg: 'add article failed',
+              code: 500
+          })
+        }
 })
 /**
  * 删除文章
