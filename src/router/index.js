@@ -2,10 +2,11 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import AdminHome from '../views/AdminHome.vue'
-import Cate from '../components/Cate.vue'
-import Msg from '../components/Msg.vue'
-import Login from '../components/Login.vue'
-import ArticlePage from '../components/ArticlePage.vue'
+import Cate from '../components/front/Cate.vue'
+import Msg from '../components/front/Msg.vue'
+import Login from '../components/front/Login.vue'
+import ArticlePage from '../components/front/ArticlePage.vue'
+import Fix from '../components/front/Fix.vue'
 import Welcome from '../components/admin/Welcome.vue'
 import UserList from '../components/admin/UserList.vue'
 import ArticleList from '../components/admin/ArticleList.vue'
@@ -32,6 +33,11 @@ const router = new VueRouter({
     path: '/home',
     name: 'Home',
     component: Home
+  },
+  {
+    path: '/fix',
+    name: 'fix',
+    component: Fix
   },
   {
     path: '/cate',

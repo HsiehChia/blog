@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import Logout from '@/components/Logout.vue'
+import Logout from '@/components/front/Logout.vue'
 
 export default {
   name: 'Header',

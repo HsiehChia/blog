@@ -43,6 +43,7 @@
             </div>
           </el-image>
           <span class="articleItem-span">{{ '标题：' + article.title }}</span>
+          <span>浏览次数：{{article.hits }}</span>
           <div class="articleItem-button">
             <el-button
             @click="details(article.id)"
@@ -66,7 +67,7 @@
 </template>
 
 <script>
-import Header from '@/components/Header.vue'
+import Header from '@/components/front/Header.vue'
 
 export default {
   name: 'Home',

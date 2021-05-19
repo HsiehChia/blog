@@ -13,6 +13,10 @@
                 <!-- 文章标题 -->
                 <h2>{{pageArticle.title}}</h2>
                 <span>{{pageArticle.createTime}}</span>
+                <el-button
+                @click="goCate"
+                round type="primary">返回分类</el-button>
+                <span>浏览次数：{{pageArticle.hits + 1}}</span>
                 <el-image
                 style="width: 100%; height: 200px"
                 fits="cover"
@@ -33,7 +37,7 @@
 </template>
 
 <script>
-import Header from '@/components/Header.vue'
+import Header from '@/components/front/Header.vue'
 
 export default {
   data () {
@@ -58,7 +62,16 @@ export default {
       } else {
         this.pageArticle = data.articleInfo[0]
       }
-      console.log(this.pageArticle)
+      this.addHits(pageArticleId)
+    },
+    // 当前文章点击+1
+    async addHits (id) {
+      const { status } = await this.$http.post('/article/addHits', { id: id })
+      if (status !== 200) {
+        this.$message.error('增加点击失败')
+      } else {
+        this.$message.success('点击+1')
+      }
     },
     // 设置显示图片
     getThumbnail (thumbnail) {
@@ -67,6 +80,10 @@ export default {
       } catch (e) {
         return ''
       }
+    },
+    // 返回分类
+    goCate () {
+      this.$router.push('/cate')
     }
   }
 }
@@ -96,9 +113,15 @@ export default {
   // background: #d3dce6;
 }
 .bg-purple-light {
-  background: #e5e9f2;
+  background: #f8f9fc;
 }
 .grid-content {
   min-height: 36px;
+}
+.articleItem-i {
+  display: block;
+  text-align: center;
+  line-height: 270px;
+  background-color: #eee;
 }
 </style>

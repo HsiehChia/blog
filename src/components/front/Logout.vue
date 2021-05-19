@@ -4,6 +4,7 @@
             用户：{{username}}
             <el-dropdown-menu slot="dropdown">
             <el-dropdown-item v-if="role_id == '1'" command="manage">后台管理</el-dropdown-item>
+            <el-dropdown-item command="fix">修改用户信息</el-dropdown-item>
             <el-dropdown-item command="logout">退出</el-dropdown-item>
             </el-dropdown-menu>
         </el-dropdown>
@@ -23,6 +24,8 @@ export default {
       if (command === 'logout') {
         window.sessionStorage.clear()
         this.$router.push('/login')
+      } else if (command === 'fix') {
+        this.$router.push('/fix')
       } else {
         this.$router.push('/admin')
       }

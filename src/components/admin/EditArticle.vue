@@ -110,7 +110,8 @@ export default {
         content: '1312',
         category_id: '1',
         thumbnail: '',
-        isHot: '1'
+        isHot: '1',
+        id: ''
       }
     }
   },
@@ -142,10 +143,10 @@ export default {
         this.articleFrom = data.articleInfo[0]
         this.articleFrom.isHot = data.articleInfo[0].isHot.toString()
       }
-      console.log(this.articleFrom)
     },
     // 点击按钮修改文章
     editArticle () {
+      console.log(this.articleFrom)
       this.$refs.articleFromRef.validate(async valid => {
         if (valid) {
           const { status } = await this.$http.post('/article/edit', this.articleFrom)
@@ -153,7 +154,7 @@ export default {
             this.$message.error('修改文章失败')
           } else {
             this.$message.success('修改文章成功')
-            // this.$router.push('/admin/article')
+            this.$router.push('/admin/article')
           }
         }
       })

@@ -3,7 +3,7 @@
       <div class="login_box">
         <!-- avatar -->
         <div class="avatar">
-          <img src="../assets/logo.png">
+          <img src="@/assets/logo.png">
         </div>
 
         <!-- form -->
@@ -97,14 +97,18 @@ export default {
             this.$message.error('登录失败：' + data.msg)
           } else {
             this.$message.success(data.msg)
+            console.log(data)
             // 保存登录token
             window.sessionStorage.setItem('token', data.token)
             // 保存登录名字
             window.sessionStorage.setItem('username', data.username)
+            // 保存登录id
+            window.sessionStorage.setItem('user_id', data.user_id)
             // 保存登录角色
             window.sessionStorage.setItem('role_id', data.role_id)
             // 跳转到home页面
             this.$router.push('/home')
+            window.sessionStorage.setItem('activePath', 'home')
           }
         }
       })
@@ -112,9 +116,18 @@ export default {
     // 点击注册
     register () {
       // 预验证
-      this.$refs.loginFormRef.validate(validate => {
+      this.$refs.loginFormRef.validate(async validate => {
         // 预验证成功，发起注册请求
         if (validate) {
+          const { data } = await this.$http.post('/login/register', this.loginForm)
+          console.log(data)
+          if (data.code === 400) {
+            this.$message.warning('注册失败：' + data.msg)
+          } else if (data.code === 500) {
+            this.$message.error(data.msg)
+          } else {
+            this.$message.success(data.msg)
+          }
         }
       })
     },

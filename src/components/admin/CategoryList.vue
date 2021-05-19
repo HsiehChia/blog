@@ -20,6 +20,7 @@
               style="width: 100%">
               <el-table-column prop="id" label="类目id"></el-table-column>
               <el-table-column prop="name" label="类目名称"></el-table-column>
+              <el-table-column prop="sort" label="排序"></el-table-column>
               <el-table-column label="操作">
                 <template slot-scope="scope">
                   <el-tooltip v-if="scope.row.id !== 1" :enterable="false" class="item" effect="dark" content="编辑" placement="top">
@@ -86,6 +87,9 @@
                 <el-form-item label="类目名" prop="name">
                   <el-input v-model="editCateForm.name"></el-input>
                 </el-form-item>
+                <el-form-item label="排序" prop="sort">
+                  <el-input v-model="editCateForm.sort"></el-input>
+                </el-form-item>
               </el-form>
 
               <!-- 底部按钮区 -->
@@ -116,7 +120,8 @@ export default {
       // 类目列表
       catePageList: [{
         id: 1,
-        name: 'web前端'
+        name: 'web前端',
+        sort: 1
       }],
       // 添加类目对话框
       addCateDialogVisible: false,
@@ -137,6 +142,7 @@ export default {
       // 修改类目表单
       editCateForm: {
         name: '',
+        sort: '',
         id: ''
       }
     }
@@ -196,6 +202,7 @@ export default {
       this.editCateDialogVisible = true
       this.editCateForm.id = cateInfo.id
       this.editCateForm.name = cateInfo.name
+      this.editCateForm.sort = cateInfo.sort
     },
     // 点击按钮修改类目数据
     editCate () {

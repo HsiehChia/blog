@@ -55,12 +55,12 @@
               <el-table-column width="180px" prop="createTime" label="操作时间"></el-table-column>
               <el-table-column label="操作">
                 <template slot-scope="scope">
-                  <el-tooltip :enterable="false" class="item" effect="dark" content="编辑" placement="top">
+                  <el-tooltip v-if="scope.row.id !== 1" :enterable="false" class="item" effect="dark" content="编辑" placement="top">
                     <el-button
                     @click="showEditUserDialog(scope.row)"
                     type="primary" icon="el-icon-edit" round></el-button>
                   </el-tooltip>
-                  <el-tooltip :enterable="false" class="item" effect="dark" content="删除" placement="top">
+                  <el-tooltip v-if="scope.row.id !== 1" :enterable="false" class="item" effect="dark" content="删除" placement="top">
                     <el-button
                     @click="deleteUserConfirm(scope.row.id)"
                     type="danger" icon="el-icon-delete" round></el-button>

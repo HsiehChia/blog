@@ -26,8 +26,11 @@
                 </div>
               </el-image>
               <span class="articleItem-span">{{ '标题：' + article.title }}</span>
+              <span>浏览次数：{{article.hits }}</span>
               <div class="articleItem-button">
-                <el-button round type="primary">点击查看详情</el-button>
+                <el-button
+                @click="details(article.id)"
+                round type="primary">点击查看详情</el-button>
               </div>
             </div>
           </div>
@@ -41,7 +44,7 @@
 </template>
 
 <script>
-import Header from '@/components/Header.vue'
+import Header from '@/components/front/Header.vue'
 
 export default {
   data () {
@@ -93,6 +96,11 @@ export default {
       } catch (e) {
         return ''
       }
+    },
+    // 查看文章详情
+    details (id) {
+      window.sessionStorage.setItem('pageArticleId', id)
+      this.$router.push('/detail')
     }
   }
 }
