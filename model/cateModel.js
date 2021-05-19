@@ -8,7 +8,7 @@ module.exports = class Category extends require ('./model') {
      */
     static getCategory () {
         return new Promise((resolve, reject) => {
-            let sql = 'SELECT * FROM `category`'
+            let sql = 'SELECT * FROM `category` ORDER BY sort'
             this.query(sql).then(results => {
                 resolve(results)
             }).catch(err => {
@@ -56,7 +56,7 @@ module.exports = class Category extends require ('./model') {
      */
     static getCategoryPage(start, size) {
         return new Promise ((resolve, reject) => {
-            let sql = 'SELECT * FROM category WHERE 1=1 ORDER BY id LIMIT ?,?'
+            let sql = 'SELECT * FROM category WHERE 1=1 ORDER BY sort LIMIT ?,?'
             this.query(sql, [start, size]).then(results => {
                 resolve(results)
             }).catch(err => {
@@ -88,9 +88,10 @@ module.exports = class Category extends require ('./model') {
      */
      static editCate (cate){
         return new Promise ((resolve, reject) => {
-            let sql = 'UPDATE category SET `name` = ? WHERE id = ?'
+            let sql = 'UPDATE category SET `name` = ?, sort = ? WHERE id = ?'
             this.query(sql, [
                 cate.name,
+                cate.sort,
                 cate.id
             ]).then(results => {
                 resolve(results.affectedRows)

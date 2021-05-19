@@ -11,8 +11,27 @@
     static login (username, password) {
         return new Promise((resolve, reject) => {
             let sql = 'SELECT * FROM `user` WHERE username = ? AND PASSWORD = ? '
-            this.query(sql, [username, password]).then( results => {
+            this.query(sql, [username, password]).then(results => {
                 resolve(results[0])
+            }).catch (err => {
+                console.log('用户登录失败：' + err.message);
+                reject(err)
+            })
+        })
+    }
+    /**
+     * 用户注册
+     * @param {string} username 
+     * @param {string} password 
+     * @returns 
+     */
+    static register (username, password) {
+        return new Promise((resolve, reject) => {
+            let address = '四川省成都市'
+            let email = 'default@qq.com'
+            let sql = 'INSERT INTO `user` (username, `password`, address, email) VALUES (?, ?, ?, ?)'
+            this.query(sql, [username, password, address, email]).then(results => {
+                resolve(results.affectedRows)
             }).catch (err => {
                 console.log('用户登录失败：' + err.message);
                 reject(err)
@@ -150,6 +169,44 @@
                 resolve(results.affectedRows)
             }).catch(err => {
                 console.log('删除用户失败：' + err.message);
+                reject(err)
+            })
+        })
+    }
+    /**
+     * 通过id获取当前用户信息
+     * @param {integer} id 
+     * @returns 
+     */
+    static getUserById(id) {
+        return new Promise ((resolve, reject) => {
+            let sql = 'SELECT * FROM `user` WHERE id = ?'
+            this.query(sql, id).then(results => {
+                resolve(results)
+            }).catch(err => {
+                console.log('获取当前用户失败：' + err.message);
+                reject(err)
+            })
+        })
+    }
+    /**
+     * 前台修改用户
+     * @param {*} user 
+     * @returns 
+     */
+    static fixUser (user){
+        return new Promise ((resolve, reject) => {
+            let sql = 'UPDATE `user` SET username = ?,password = ?,email = ?,address = ? WHERE id = ?'
+            this.query(sql, [
+                user.username,
+                user.password,
+                user.email,
+                user.address,
+                user.id
+            ]).then(results => {
+                resolve(results.affectedRows)
+            }).catch(err => {
+                console.log('前台修改用户失败：' + err.message);
                 reject(err)
             })
         })

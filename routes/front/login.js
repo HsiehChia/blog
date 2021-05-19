@@ -2,8 +2,7 @@
  * 登录子应用
  */
 const express = require('express')
-const User = require('../../model/userModel')
-// const User = require('../../middleware/userMid')
+const User = require('../../middleware/userMid')
 
 var loginRouter = express.Router();
 
@@ -13,31 +12,81 @@ loginRouter.get('/', (req, res, next) => {
 })
 
 // 实现登陆操作
-loginRouter.post('/', (req, res, next) => {
-    let { username, password } = req.body
-    User.login(username, password).then(result => {
-        if(result){
-            res.send({ 
-                code: 200,
-                msg: '登录成功',
-                role_id: result.role_id,
-                username: username,
-                token: result.id+result.username
-            })
-        }else{
-            res.send({
-                code: 500,
-                msg: '用户名或者密码错误'
-            })
-        }
-    }).catch(err =>{
-        next(err)
+loginRouter.post('/', [
+    User.login
+], (req, res) => {
+    let { 
+        user
+    } = req
+    if(user) {
+        res.send({
+            code: 200,
+            msg: '登录成功',
+            role_id: user.role_id,
+            username: user.username,
+            token: user.id+user.username,
+            user_id: user.id
+        })
+    }else{
+        res.send({
+            code: 500,
+            msg: '用户名或者密码错误'
+        })
+    }
+})
+
+// 注册
+loginRouter.post('/register', [
+    User.login
+], (req, res, next) => {
+    if(req.user) {
+        res.send ({
+            code: 400,
+            msg: '已经注册过了，请直接登录'
+        })
+    }else {
+        next();
+    }
+}, [
+    User.register
+], (req, res)=>{
+    if(req.affectedRows){
+        res.send ({
+            code: 200,
+            msg: '注册成功'
+        })
+    }else {
+        res.send({ 
+            code: 500,
+            msg: '注册失败'
+        })
+    }
+})
+// 通过id得到当前用户信息
+loginRouter.post('/userInfo', [
+    User.getUserById
+], (req, res) => {
+    let { userInfo } = req
+    res.send({
+        userInfo: userInfo
     })
 })
-// 验证
-loginRouter.get('/verify', (req, res) => {
-    let ver = req.headers.authorization
-    console.log(ver);
+
+// 修改用户信息
+loginRouter.post('/fix',[
+    User.fixUser
+], (req, res) => {
+    if(req.affectedRows){
+        res.send ({
+            code: 200,
+            msg: '前台修改用户信息成功'
+        })
+    }else {
+        res.send({ 
+            code: 500,
+            msg: '前台修改用户信息失败'
+        })
+    }
 })
 
 module.exports = loginRouter;

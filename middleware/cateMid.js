@@ -88,10 +88,12 @@ module.exports = {
      editCate: (req, res, next) => {
         let {
             name,
+            sort,
             id
         } = req.body
         let user = {
             name: name,
+            sort: sort,
             id: id
         }
         Category.editCate(user).then(results => {

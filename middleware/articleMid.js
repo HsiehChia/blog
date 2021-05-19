@@ -130,6 +130,21 @@
         })
     },
     /**
+     * 修改文章
+     * @param {*} req 
+     * @param {*} res 
+     * @param {*} next 
+     */
+    editArticle: (req, res, next) => {
+        let { title, content, isHot, category_id, thumbnail, id} = req.body
+        Article.editArticle(title, content, isHot, category_id, thumbnail, id).then(results => {
+            req.affectedRows = results
+            next()
+        }).catch(err => {
+            next(err)
+        })
+    },
+    /**
      * 通过id获得文章信息
      * @param {*} req 
      * @param {*} res 
@@ -139,6 +154,21 @@
         let { id } = req.query
         Article.getArticleById(id).then(results => {
             req.articleInfo = results
+            next()
+        }).catch(err => {
+            next(err)
+        })
+    },
+    /**
+     * hits+1
+     * @param {*} req 
+     * @param {*} res 
+     * @param {*} next 
+     */
+    addHits: (req, res, next) => {
+        let { id } = req.body
+        Article.addHits(id).then(results => {
+            req.affectedRows = results
             next()
         }).catch(err => {
             next(err)

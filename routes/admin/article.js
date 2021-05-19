@@ -143,6 +143,42 @@ articleRouter.post('/add',[
         })
       }
   })
+/**
+ * 修改文章
+ */
+articleRouter.post('/edit', [
+  Article.editArticle
+], (req, res) => {
+  if(req.affectedRows){
+    res.send({
+          msg: 'edit article success',
+          code: 200
+      })
+    }else {
+      res.send({
+          msg: 'edit article failed',
+          code: 500
+      })
+    }
+})
+/**
+ * hits+1
+ */
+articleRouter.post('/addHits', [
+  Article.addHits
+], (req, res) => {
+  if(req.affectedRows){
+    res.send({
+          msg: 'add hits success',
+          code: 200
+      })
+    }else {
+      res.send({
+          msg: 'add hit failed',
+          code: 500
+      })
+    }
+})
   /**
    * 图片上传
    */

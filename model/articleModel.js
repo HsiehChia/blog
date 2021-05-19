@@ -163,6 +163,27 @@
         })
     }
     /**
+     * 修改文章
+     * @param {string} title 
+     * @param {string} content 
+     * @param {integer} isHot 
+     * @param {integer} category_id 
+     * @param {string} thumbnail 
+     * @param {integer} id 
+     * @returns 
+     */
+    static editArticle (title, content, isHot, category_id, thumbnail, id) {
+        return new Promise ((resolve, reject) => {
+            let sql = 'UPDATE article SET title = ?, content = ?, isHot = ?, category_id = ?, thumbnail = ? WHERE id = ?'
+            this.query(sql, [title, content, isHot, category_id, thumbnail, id]).then(results => {
+                resolve(results.affectedRows)
+            }).catch(err => {
+                console.log('修改文章失败：' + err.message);
+                reject(err)
+            })
+        })
+    }
+    /**
      * 通过id获得文章
      * @param {integer} id 
      * @returns 
@@ -175,6 +196,22 @@
                 resolve(results)
             }).catch(err => {
                 console.log('通过id获得文章失败：' + err.message);
+                reject(err)
+            })
+        })
+    }
+    /**
+     * hits加一
+     * @param {*} id 
+     * @returns 
+     */
+    static addHits (id) {
+        return new Promise ((resolve, reject) => {
+            let sql = 'UPDATE article SET hits = hits + 1 WHERE id = ?'
+            this.query(sql, id).then(results => {
+                resolve(results.affectedRows)
+            }).catch(err => {
+                console.log('hits加一失败：' + err.message);
                 reject(err)
             })
         })

@@ -16,6 +16,7 @@ const userRouter = require('./routes/admin/user')
 const cateRouter = require('./routes/admin/cate')
 const roleRouter = require('./routes/admin/role')
 const authRouter = require('./routes/admin/auth')
+const dataRouter = require('./routes/admin/data')
 
 var app = express();
 
@@ -73,6 +74,8 @@ app.use('/cate', cateRouter)
 app.use('/role', roleRouter)
 // 调用权限子应用
 app.use('/auth', authRouter)
+// 调用数据子应用
+app.use('/data', dataRouter)
 
 // 单文件上传操作
 app.post('/*', upload.single('upload'), (req, res, next) => {
