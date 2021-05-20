@@ -7,6 +7,7 @@ import Msg from '../components/front/Msg.vue'
 import Login from '../components/front/Login.vue'
 import ArticlePage from '../components/front/ArticlePage.vue'
 import Fix from '../components/front/Fix.vue'
+import PageList from '../components/front/PageList.vue'
 import Welcome from '../components/admin/Welcome.vue'
 import UserList from '../components/admin/UserList.vue'
 import ArticleList from '../components/admin/ArticleList.vue'
@@ -53,6 +54,11 @@ const router = new VueRouter({
     path: '/msg',
     name: 'Msg',
     component: Msg
+  },
+  {
+    path: '/pagelist',
+    name: 'PageList',
+    component: PageList
   },
   {
     path: '/admin',

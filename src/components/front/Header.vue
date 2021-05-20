@@ -29,19 +29,15 @@
             </el-col>
             <el-col :span="6">
                 <div class="grid-content">
-                    <el-input
-                    placeholder="请输入搜索内容"
-                    v-model="search"
-                    clearable>
+                    <el-input v-model="search"
+                    clearable
+                    placeholder="请输入搜索关键词" class="input-with-select">
+                        <el-button @click="getListBykeyword()"
+                        slot="append" icon="el-icon-search"></el-button>
                     </el-input>
                 </div>
             </el-col>
-            <el-col :span="2">
-                <div class="grid-content">
-                    <el-button type="primary" icon="el-icon-search">搜索</el-button>
-                </div>
-            </el-col>
-            <el-col :span="4">
+            <el-col :span="6" style="text-align: center;">
                 <Logout></Logout>
             </el-col>
         </el-row>
@@ -72,6 +68,10 @@ export default {
     handleSelect (key, keyPath) {
       console.log(key, keyPath)
       window.sessionStorage.setItem('activePath', key)
+    },
+    getListBykeyword () {
+      window.sessionStorage.setItem('keyword', this.search)
+      this.$router.push('/pagelist')
     }
   },
   components: {
