@@ -216,4 +216,19 @@
             })
         })
     }
+    /**
+     * 获取指定关键词的文章列表
+     * @param {string}} keyword 关键词
+     */
+     static getListBykeyword(keyword) {
+        return new Promise((resolve, reject) => {
+            let sql = 'SELECT * FROM article WHERE title OR content LIKE ? ORDER BY createTime DESC'
+            this.query(sql, keyword).then(results => {
+                resolve(results)
+            }).catch(err => {
+                console.log(`获取指定关键词的文章列表失败：${err.message}`)
+                reject(err)
+            })
+        })
+    }
  }

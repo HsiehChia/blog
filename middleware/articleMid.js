@@ -173,5 +173,18 @@
         }).catch(err => {
             next(err)
         })
-    }
+    },
+    /**
+     * 获取指定关键词的文章列表
+     */
+     getListBykeyword: (req, res, next) => {
+        let keyword = req.query.keyword
+        keyword = '%'+keyword+'%'
+        Article.getListBykeyword(keyword).then(results => {
+            req.articleList = results
+            next()
+        }).catch(err => {
+            next(err)
+        })
+    },
  }

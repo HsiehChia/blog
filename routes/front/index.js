@@ -5,7 +5,6 @@
  var indexRouter = express.Router();
 
  const Article = require('../../middleware/articleMid')
- const Category = require('../../middleware/cateMid')
 
  //加载首页页面
 indexRouter.get('/', [
@@ -61,7 +60,7 @@ indexRouter.get('/', [
     })
 })
 
-// 
+// 加载首页热门轮播图
 indexRouter.get('/hot', [
     Article.getHotArticleList
 ], (req, res) => {
@@ -70,6 +69,18 @@ indexRouter.get('/hot', [
     } = req
     res.send({
         hotArticleList: hotArticleList
+    })
+})
+
+// 首页搜索功能
+indexRouter.get('/search', [
+    Article.getListBykeyword
+], (req, res) => {
+    let {
+        articleList
+    } = req
+    res.send({
+        articleList: articleList
     })
 })
 
