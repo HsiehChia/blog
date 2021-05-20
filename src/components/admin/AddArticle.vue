@@ -53,15 +53,16 @@
             <el-form-item label="是否热门" prop="isHot">
               <el-switch v-model="articleFrom.isHot" active-value="1" inactive-value="0"></el-switch>
             </el-form-item>
-            <!-- <el-form-item label="缩略图" prop="thumbnail">
-              <el-input
-              type="file"
-              id="thumbInput"
-              v-model="thumbInputName"
-              accept="image/png, image/jpeg, image/gif, image/jpg"
-              @change="articleThumbnail()"
-              ></el-input>
-            </el-form-item> -->
+            <el-form-item label="缩略图" prop="thumbnail" style="width:400px">
+            <el-upload
+              name='upload'
+              action="http://127.0.0.1:3000/upload"
+              :on-success="handleSuccess"
+              list-type="picture">
+              <el-button size="small" type="primary">点击上传</el-button>
+              <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+            </el-upload>
+            </el-form-item>
           </el-form>
           <!-- 底部按钮 -->
           <el-button @click="goArticle">取 消</el-button>
@@ -147,6 +148,11 @@ export default {
           }
         }
       })
+    },
+    // 图片上传成功后
+    handleSuccess (res, file) {
+      console.log(file)
+      this.articleFrom.thumbnail = file.response.uploadUrl
     }
   }
 }

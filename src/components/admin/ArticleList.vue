@@ -289,11 +289,6 @@ export default {
           this.getArticleList()
         }
       }
-    },
-    articleThumbnail () {
-      this.editArticleForm.thumbnail = document.querySelector('#thumbInput').files[0].name
-      console.log(document.querySelector('#thumbInput').value)
-      console.log(this.editArticleForm.thumbnail)
     }
   }
 }
