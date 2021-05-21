@@ -59,8 +59,19 @@
                 </el-menu-item>
             </el-submenu>
 
-            <!-- 账户管理 -->
+            <!-- 留言管理 -->
             <el-submenu index="5">
+                <template slot="title">
+                    <i class="el-icon-chat-dot-square"></i>
+                    <span>留言管理</span>
+                </template>
+                <el-menu-item index="msg" @click="saveNavState('msg')">
+                    留言列表
+                </el-menu-item>
+            </el-submenu>
+
+            <!-- 账户管理 -->
+            <el-submenu index="6">
                 <template slot="title">
                 <i class="el-icon-s-tools"></i>
                 <span slot="title">账户管理</span>

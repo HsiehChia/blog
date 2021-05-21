@@ -17,6 +17,7 @@ import CategoryList from '../components/admin/CategoryList.vue'
 import RoleList from '../components/admin/RoleList.vue'
 import AuthList from '../components/admin/AuthList.vue'
 import DataCount from '../components/admin/DataCount.vue'
+import MsgList from '../components/admin/MsgList.vue'
 
 Vue.use(VueRouter)
 
@@ -101,6 +102,10 @@ const router = new VueRouter({
       path: '/admin/datacount',
       name: 'DataCount',
       component: DataCount
+    }, {
+      path: '/admin/msg',
+      name: 'MsgList',
+      component: MsgList
     }]
   }]
 })

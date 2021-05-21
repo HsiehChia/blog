@@ -17,7 +17,7 @@
                     @clear="getUserList()"
                     clearable
                     placeholder="请输入用户名字" class="input-with-select">
-                        <el-button @click="getUserListByName()"
+                        <el-button @click="getUserList()"
                         slot="append" icon="el-icon-search"></el-button>
                     </el-input>
                     </div>
@@ -136,8 +136,8 @@
             </el-form-item>
             <el-form-item label="用户角色">
               <el-switch
-              active-text="管理员"
-              inactive-text="游客"
+              active-text="游客"
+              inactive-text="超级管理员"
               @change="userRoleChange(editUserForm.role_id)"
               v-model="editUserForm.isAdmin"></el-switch>
             </el-form-item>
@@ -228,22 +228,9 @@ export default {
     this.getUserList()
   },
   methods: {
-    // 搜索用户
-    async getUserListByName (queryInput) {
-      queryInput = '?username=' + this.queryInfo.queryInput
-      const { data, status } = await this.$http.get('/user/search' + queryInput)
-      if (status !== 200) {
-        console.log(this.$message.error('模糊搜索用户数据列表失败'))
-      } else {
-        this.userTotal = data.page.userTotal
-        this.userPageList = data.page.userPageListByName
-        this.pageNum = data.page.pageNum
-        this.p = Number(data.page.p)
-      }
-    },
     // 获取用户列表
     async getUserList (query) {
-      query = '?p=' + this.queryInfo.query
+      query = '?p=' + this.queryInfo.query + '&username=' + this.queryInfo.queryInput
       const { data, status } = await this.$http.get('/user' + query)
       if (status !== 200) {
         console.log(this.$message.error('用户数据列表获取失败'))

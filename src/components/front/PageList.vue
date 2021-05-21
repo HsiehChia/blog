@@ -8,7 +8,7 @@
         <el-main>
           <el-row>
             <el-col :span="4"><div class="grid-content bg-purple"></div></el-col>
-            <el-col :span="16">
+            <el-col :span="16" style="width: 100%">
               <h3>搜索结果：</h3>
             <!-- 搜索文章列表 -->
             <div class="articleList">
