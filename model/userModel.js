@@ -72,9 +72,10 @@
      * 获取用户数量
      * @returns 用户数量
      */
-    static getUserTotal(){
+    static getUserTotal(username){
         return new Promise ((resolve, reject) => {
-            let sql = 'SELECT COUNT(1) AS userTotal FROM `user` WHERE 1=1 '
+            let sql = 'SELECT COUNT(1) AS userTotal FROM `user`'
+            sql += username != '' && username ? ` WHERE username LIKE '${username}' `: ' WHERE 1=1'
             this.query(sql).then(results => {
                 resolve(results[0].userTotal)
             }).catch(err => {
@@ -89,29 +90,15 @@
      * @param {number} size 获取条数
      * @returns 
      */
-    static getUserPage(start, size){
+    static getUserPage(username, start, size){
         return new Promise ((resolve, reject) => {
-            let sql = 'SELECT * FROM `user` WHERE 1=1 ORDER BY `createTime` DESC LIMIT ?,?'
+            let sql = 'SELECT * FROM `user`'
+            sql += username != '' && username ? ` WHERE username LIKE '${username}'` : ' WHERE 1=1'
+            sql += ' ORDER BY `createTime` DESC LIMIT ?,?'
             this.query(sql, [start, size]).then(results => {
                 resolve(results)
             }).catch(err => {
                 console.log('获取当前页面用户失败：' + err.message);
-                reject(err)
-            })
-        })
-    }
-    /**
-     * 通过名字模糊搜索用户信息
-     * @param {string} username 
-     * @returns 
-     */
-    static getUserListByName(username){
-        return new Promise ((resolve, reject) => {
-            let sql = 'SELECT * FROM `user` WHERE username LIKE ?'
-            this.query(sql, username).then(results => {
-                resolve(results)
-            }).catch(err => {
-                console.log('根据名字获取用户失败：' + err.message);
                 reject(err)
             })
         })
@@ -124,10 +111,10 @@
      * @param {string} address 
      * @returns 
      */
-    static addUser (username, password, email, address){
+    static addUser (username, password, email, address, createTime){
         return new Promise ((resolve, reject) => {
-            let sql = 'INSERT INTO `user` (username, password, email, address) VALUES (?, ?, ?, ?)'
-            this.query(sql, [username, password, email, address]).then(results => {
+            let sql = 'INSERT INTO `user` (username, password, email, address, createTime) VALUES (?, ?, ?, ?, ?)'
+            this.query(sql, [username, password, email, address, createTime]).then(results => {
                 resolve(results.insertId)
             }).catch(err => {
                 console.log('插入用户失败：' + err.message);

@@ -68,7 +68,9 @@ module.exports = {
      * @param {*} next 
      */
     getUserTotal: (req, res, next) => {
-        User.getUserTotal().then(results => {
+        let {username} = req.query
+        username = username != '' && username ? '%'+username+'%': username
+        User.getUserTotal(username).then(results => {
             req.userTotal = results
             next()
         }).catch(err => {
@@ -86,26 +88,10 @@ module.exports = {
             start,
             size
         } = req
-        User.getUserPage(start,size).then(results => {
+        let {username} = req.query
+        username = username != '' && username ? '%'+username+'%': username
+        User.getUserPage(username, start,size).then(results => {
             req.userPageList = results
-            next()
-        }).catch(err => {
-            next(err)
-        })
-    },
-    /**
-     * 通过名字搜索用户信息
-     * @param {*} req 
-     * @param {*} res 
-     * @param {*} next 
-     */
-    getUserListByName: (req, res, next) => {
-        let {
-            username
-        } = req.query
-        username = '%'+username+'%'
-        User.getUserListByName(username).then(results => {
-            req.userPageListByName = results
             next()
         }).catch(err => {
             next(err)
@@ -124,7 +110,8 @@ module.exports = {
             email,
             address
         } = req.body
-        User.addUser(username, password, email, address).then(results => {
+        let createTime = new Date()
+        User.addUser(username, password, email, address, createTime).then(results => {
             req.insertId = results
             next()
         }).catch(err => {

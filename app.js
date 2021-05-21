@@ -18,6 +18,7 @@ const cateRouter = require('./routes/admin/cate')
 const roleRouter = require('./routes/admin/role')
 const authRouter = require('./routes/admin/auth')
 const dataRouter = require('./routes/admin/data')
+const msgRouter = require('./routes/admin/msg')
 
 const imgRouter = require('./routes/img')
 
@@ -69,33 +70,8 @@ app.use('/role', roleRouter)
 app.use('/auth', authRouter)
 // 调用数据子应用
 app.use('/data', dataRouter)
-
-
-
-// // 上传文件配置
-// const upload = multer ({
-//   // 上传文件的存储目录
-//   dest: './static/upload', 
-//   // 单个文件大小限制在2M以内
-//   limits: {
-//       fileSize: 1024 * 1024 * 2
-//   }
-// })
-// 单文件上传操作
-// app.post('/*', upload.single('upload'), (req, res, next) => {
-//  // 上传成功后的文件对象
-//   let { file } = req
-//   if (file) {
-//       //  file.originalname ==> 文件的原名称
-//       let extname = path.extname(file.originalname)
-//       // file.path ==> 上传后的文件路径
-//       fs.renameSync(file.path, file.path + extname)
-//       // file.filename ==> 上传后的文件名
-//       req.uploadUrl = '/upload/' + file.filename + extname
-//   }
-//   res.send({uploadUrl: req.uploadUrl})
-//   next()
-// })
+// 调用留言子应用
+app.use('/msg', msgRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
