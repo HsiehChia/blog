@@ -8,7 +8,7 @@ const imgRouter = express.Router();
 // 上传文件配置
 const upload = multer ({
   // 上传文件的存储目录
-  dest: 'D:/project/vueModule/project04/src/assets/upload', 
+  dest: 'G:/学习/毕业设计论文/VUEmodule/project04/src/assets/upload', 
   // 单个文件大小限制在2M以内
   limits: {
       fileSize: 1024 * 1024 * 2
