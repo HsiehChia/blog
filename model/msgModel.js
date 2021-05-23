@@ -76,10 +76,10 @@
      * @param {Date} createTime 评论的时间
      * @returns 
      */
-    static addMsg  (msg, user_id, article_id, createTime){
+    static addMsg  (msg, user_id, toUser_id, article_id, createTime){
         return new Promise ((resolve, reject) => {
-            let sql = 'INSERT INTO message (msg, user_id, article_id, createTime) VALUES (?, ?, ?, ?)'
-            this.query(sql, [msg, user_id, article_id, createTime]).then(results => {
+            let sql = 'INSERT INTO message (msg, user_id, toUser_id, article_id, createTime) VALUES (?, ?, ?, ?, ?)'
+            this.query(sql, [msg, user_id, toUser_id, article_id, createTime]).then(results => {
                 resolve(results.insertId)
             }).catch(err => {
                 console.log('插入消息失败：' + err.message);

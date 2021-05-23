@@ -78,10 +78,11 @@ module.exports = {
         let {
             msg,
             user_id,
+            toUser_id,
             article_id
         } = req.body
         let createTime = new Date()
-        Msg.addMsg(msg, user_id, article_id, createTime).then(results => {
+        Msg.addMsg(msg, user_id, toUser_id, article_id, createTime).then(results => {
             req.insertId = results
             next()
         }).catch(err => {

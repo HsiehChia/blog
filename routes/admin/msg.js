@@ -51,11 +51,12 @@ msgRouter.get('/', [
              msgPageList[i].username = userList[j].username
              msgPageList[i].role_id = userList[j].role_id
            }
-         }
-         for(let k = 0; k<articleList.length; k++){
-           if(msgPageList[i].article_id == articleList[k].id){
-             msgPageList[i].title = articleList[k].title
-           }
+          if(msgPageList[i].toUser_id == userList[j].id){
+            msgPageList[i].toUsername = userList[j].username
+          }
+          if(msgPageList[i].article_id == articleList[j].id){
+            msgPageList[i].title = articleList[j].title
+          }
          }
          msgPageList[i].createTime = msgPageList[i].createTime.toLocaleString()
      }
@@ -118,6 +119,12 @@ msgRouter.get('/articleId', [
         if(msgList[i].user_id == userList[j].id){
           msgList[i].username = userList[j].username
           msgList[i].role_id = userList[j].role_id
+        }
+        if(msgList[i].toUser_id == userList[j].id){
+          msgList[i].toUsername = userList[j].username
+        }
+        if(msgList[i].article_id == articleList[j].id){
+          msgList[i].title = articleList[j].title
         }
       }
       for(let k = 0; k<articleList.length; k++){
