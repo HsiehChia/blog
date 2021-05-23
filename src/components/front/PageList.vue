@@ -23,7 +23,7 @@
                     <i class="el-icon-picture-outline articleItem-i"></i>
                   </div>
                 </el-image>
-                <span class="articleItem-span">{{ '标题：' + article.title }}</span>
+                <span class="articleItem-span">{{ '标题：' + article.title }}</span><br/>
                 <span>浏览次数：{{article.hits }}</span>
                 <div class="articleItem-button">
                   <el-button

@@ -33,6 +33,7 @@
               <el-table-column width="120px" prop="username" label="姓名"></el-table-column>
               <el-table-column width="250px" prop="msg" label="消息"></el-table-column>
               <el-table-column width="180px" prop="title" label="标题"></el-table-column>
+              <el-table-column width="120px" prop="toUsername" label="留言对象"></el-table-column>
               <el-table-column width="180px" prop="createTime" label="留言时间"></el-table-column>
               <el-table-column label="操作">
                 <template slot-scope="scope">
@@ -74,7 +75,7 @@
           :rules="msgFormRules"
           ref="addMsgFormRef"
           label-width="100px" >
-            <el-form-item label="消息回复" prop="msg">
+            <el-form-item :label="'@'+ addMsgForm.toUsername + ':'" prop="msg">
               <el-input v-model="addMsgForm.msg"></el-input>
             </el-form-item>
           </el-form>
@@ -97,6 +98,8 @@ export default {
         id: 1,
         user_id: 1,
         username: 'hello',
+        toUser_id: 2,
+        toUsername: 'admin',
         role_id: 1,
         msg: '6666666',
         title: 'HTML',
@@ -142,6 +145,8 @@ export default {
       this.addMsgForm.msg = msgInfo.msg
       this.addMsgForm.user_id = window.sessionStorage.getItem('user_id')
       this.addMsgForm.article_id = msgInfo.article_id
+      this.addMsgForm.toUser_id = msgInfo.user_id
+      this.addMsgForm.toUsername = msgInfo.username
     },
     // 点击按钮添加消息回复
     addMsg () {

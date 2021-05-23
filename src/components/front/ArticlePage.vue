@@ -41,14 +41,14 @@
                       <div v-if="msg.role_id === 1" class="msg-tag"><el-tag type="danger"> 管理员 </el-tag></div>
                       <div class="msg-time">{{msg.createTime}}</div>
                     </div>
-                    <div class="msg-content">{{'消息内容： ' + msg.msg }}</div>
+                    <div class="msg-content"><span>@{{msg.toUsername}}:</span> {{msg.msg }}</div>
                   </div>
                 </el-card>
                 <el-input
                   type="text"
                   clearable
                   placeholder="请输入想要评论的内容"
-                  v-model="text"
+                  v-model="msg"
                   maxlength="100"
                   show-word-limit>
                     <el-button @click="addMsg()"
@@ -74,7 +74,9 @@ export default {
       // 页面信息
       pageArticle: {},
       // 留言信息
-      msgList: {}
+      msgList: {},
+      // 留言
+      msg: ''
     }
   },
   created () {
@@ -127,9 +129,29 @@ export default {
     // 返回首页
     goBack () {
       this.$router.push('/home')
+      window.sessionStorage.setItem('activePath', 'home')
     },
     // 添加留言
-    addMsg () {}
+    async addMsg () {
+      const addMsgInfo = {}
+      addMsgInfo.msg = this.msg
+      addMsgInfo.user_id = window.sessionStorage.getItem('user_id')
+      addMsgInfo.toUser_id = 1
+      addMsgInfo.article_id = this.pageArticle.id
+      // 发起添加用户网络请求
+      const { data, status } = await this.$http.post('/msg/add', addMsgInfo)
+      if (status !== 200) {
+        this.$message.error('回复消息失败')
+      } else {
+        this.$message.success('回复消息成功')
+        console.log(data)
+      }
+      // 关闭对话框
+      this.addMsgDialogVisible = false
+      // 刷新消息列表
+      this.msg = ''
+      this.getMsg(this.pageArticle.id)
+    }
   }
 }
 </script>
@@ -248,5 +270,9 @@ export default {
   width: 100%;
   padding: 5px 3px;
   bottom: 0;
+}
+.msg-content span {
+  color: crimson;
+  font-weight: 700;
 }
 </style>
