@@ -8,8 +8,8 @@
                     class="el-menu-demo"
                     mode="horizontal"
                     @select="handleSelect"
-                    background-color="#18966a"
-                    text-color="#fff"
+                    background-color="#d6d9ff"
+                    text-color="#333"
                     active-text-color="#ffd04b"
                     :router="true">
                     <el-menu-item index="home">

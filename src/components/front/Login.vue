@@ -1,5 +1,6 @@
 <template>
   <div class="login_container">
+      <div class="login_hello">hi~,欢迎来到我的博客！</div>
       <div class="login_box">
         <!-- avatar -->
         <div class="avatar">
@@ -48,13 +49,6 @@
             </el-row>
           </el-form-item>
         </el-form>
-
-        <!-- backtohome -->
-        <el-row :gutter="20" class="backToHome">
-          <el-col :span="6" :offset="9">
-            <el-link type="primary">点击返回首页</el-link>
-          </el-col>
-        </el-row>
       </div>
   </div>
 </template>
@@ -141,9 +135,23 @@ export default {
 
 <style scoped lang="less">
 .login_container {
-    background-color: #18966a;
+    // background-color: #b4b9ff;
+    background-image: url('../../assets/bg.jpg');
     height: 100%;
     position: relative;
+}
+.login_hello {
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 40px;
+  font-weight: 700;
+  color: #8d0505;
+  text-shadow:-2px 0 #fff,
+  0 2px #fff,
+  2px 0 #fff,
+  0 -2px #fff;
+  position: absolute;
 }
 .login_box {
   width: 500px;
@@ -153,7 +161,7 @@ export default {
   position: absolute;
   left: 50%;
   top: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -30%);
   .avatar {
     height: 100px;
     width: 100px;

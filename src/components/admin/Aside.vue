@@ -4,7 +4,7 @@
         <el-menu
             :default-active="activePath"
             class="el-menu-vertical-demo"
-            background-color="#86ebc8"
+            background-color="#d6d9ff"
             text-color="#333"
             active-text-color="#fff"
             unique-opened
