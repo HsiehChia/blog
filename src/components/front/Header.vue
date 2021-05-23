@@ -20,10 +20,6 @@
                       <i class="el-icon-s-management" style="color:#fff"></i>
                       文章分类
                     </el-menu-item>
-                    <el-menu-item index="msg">
-                      <i class="el-icon-s-promotion" style="color:#fff"></i>
-                      留言板
-                    </el-menu-item>
                   </el-menu>
                 </div>
             </el-col>
@@ -56,15 +52,6 @@ export default {
     }
   },
   methods: {
-    toHome () {
-      this.$router.push('/home')
-    },
-    toCate () {
-      this.$router.push('/cate')
-    },
-    toMsg () {
-      this.$router.push('/msg')
-    },
     handleSelect (key, keyPath) {
       console.log(key, keyPath)
       window.sessionStorage.setItem('activePath', key)
