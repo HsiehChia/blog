@@ -61,6 +61,15 @@
                 prop="description"
                 label="权限描述">
               </el-table-column>
+              <el-table-column label="操作">
+                <template slot-scope="scope">
+                  <el-tooltip :enterable="false" class="item" effect="dark" content="编辑权限描述" placement="top">
+                    <el-button
+                    @click="showEditDialog(scope.row)"
+                    type="primary" icon="el-icon-edit" round></el-button>
+                  </el-tooltip>
+                </template>
+              </el-table-column>
             </el-table>
           </el-tab-pane>
 
