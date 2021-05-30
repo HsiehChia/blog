@@ -46,19 +46,23 @@ msgRouter.get('/', [
         userList
     } = req
      for(let i = 0; i< msgPageList.length; i++){
-         for(let j = 0; j<userList.length; j++){
-           if(msgPageList[i].user_id == userList[j].id){
-             msgPageList[i].username = userList[j].username
-             msgPageList[i].role_id = userList[j].role_id
-           }
-          if(msgPageList[i].toUser_id == userList[j].id){
-            msgPageList[i].toUsername = userList[j].username
-          }
-          if(msgPageList[i].article_id == articleList[j].id){
-            msgPageList[i].title = articleList[j].title
-          }
+       for(let j = 0; j<userList.length; j++){
+         if(msgPageList[i].user_id == userList[j].id){
+           msgPageList[i].username = userList[j].username
+           msgPageList[i].role_id = userList[j].role_id
          }
-         msgPageList[i].createTime = msgPageList[i].createTime.toLocaleString()
+        if(msgPageList[i].toUser_id == userList[j].id){
+          msgPageList[i].toUsername = userList[j].username
+        }
+       }
+       msgPageList[i].createTime = msgPageList[i].createTime.toLocaleString()
+     }
+     for (let m = 0; m < msgPageList.length; m++) {
+       for (let n = 0; n < articleList.length; n++) {
+          if(msgPageList[m].article_id == articleList[n].id){
+            msgPageList[m].title = articleList[n].title
+          }
+       }
      }
     page.msgPageList = msgPageList
     res.send({
@@ -122,9 +126,6 @@ msgRouter.get('/articleId', [
         }
         if(msgList[i].toUser_id == userList[j].id){
           msgList[i].toUsername = userList[j].username
-        }
-        if(msgList[i].article_id == articleList[j].id){
-          msgList[i].title = articleList[j].title
         }
       }
       for(let k = 0; k<articleList.length; k++){
