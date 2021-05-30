@@ -161,12 +161,16 @@ export default {
 .container {
   height: 100%;
 }
-.el-header, .el-footer {
-  background-color: #18966a;
-  color: #fff;
+.el-header {
+  background-color: #d6d9ff;
+  color: #333;
   line-height: 60px;
 }
 .el-footer{
+  background-color: #d6d9ff;
+  color: #333;
+  height: 40px !important;
+  line-height: 40px;
   text-align: center;
 }
 .el-main {
