@@ -182,6 +182,7 @@ export default {
         this.msgPageList = data.page.msgPageList
         this.pageNum = data.page.pageNum
         this.p = Number(data.page.p)
+        console.log(this.msgPageList)
       }
     },
     // 删除留言
